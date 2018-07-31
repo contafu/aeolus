@@ -2,6 +2,6 @@ package com.olympians.aeolus;
 
 import com.olympians.aeolus.annotations.Get;
 
-@Get(api = "/weather_mini")
+@Get()
 public class LoginRequest implements AeolusRequest {
 }
