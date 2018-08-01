@@ -1,6 +1,8 @@
 package com.olympians.aeolus.config
 
 import android.text.TextUtils
+import okhttp3.OkHttpClient
+import javax.net.ssl.HostnameVerifier
 
 object AeolusConfig {
 
@@ -8,9 +10,17 @@ object AeolusConfig {
 
     private val headerMap: MutableMap<String, String> = mutableMapOf()
 
+    private var hostnameVerifier: HostnameVerifier? = null
+
+    private var httpClient: OkHttpClient? = null
+
     internal fun getHost() = this.host
 
     internal fun getHeaders(): MutableMap<String, String> = this.headerMap
+
+    internal fun getHostnameVerifier(): HostnameVerifier? = this.hostnameVerifier
+
+    internal fun getHttpClient(): OkHttpClient? = this.httpClient
 
     fun setHost(host: String): AeolusConfig {
         this.host = host
@@ -28,6 +38,16 @@ object AeolusConfig {
         if (!headers.isEmpty()) {
             this.headerMap.putAll(headers)
         }
+        return this
+    }
+
+    fun setHostnameVerifier(hostnameVerifier: HostnameVerifier): AeolusConfig {
+        this.hostnameVerifier = hostnameVerifier
+        return this
+    }
+
+    fun setHttpClient(httpClient: OkHttpClient): AeolusConfig {
+        this.httpClient = httpClient
         return this
     }
 

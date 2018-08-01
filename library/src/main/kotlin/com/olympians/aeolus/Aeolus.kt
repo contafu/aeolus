@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSON
 import com.olympians.aeolus.callback.OnAeolusCallback
 import com.olympians.aeolus.callback.OnAeolusEnd
 import com.olympians.aeolus.callback.OnAeolusStart
+import com.olympians.aeolus.config.AeolusConfig
 import com.olympians.aeolus.utils.AeolusTools
 import com.olympians.aeolus.utils.AnnotationTools
 import okhttp3.OkHttpClient
@@ -20,12 +21,19 @@ object Aeolus {
     private const val RESPONSE_CODE = "CODE"
     const val AEOLUS_CODE_JSON_ERROR = 0x01
 
-    private val client = OkHttpClient
-            .Builder()
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .build()
+    private val client = AeolusConfig.getHttpClient().let {
+        it ?: AeolusConfig.getHostnameVerifier().let {
+            val client = OkHttpClient
+                    .Builder()
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .connectTimeout(30, TimeUnit.SECONDS)
+            if (null != it) {
+                client.hostnameVerifier(it)
+            }
+            client.build()
+        }
+    }
 
     class Builder<T> : Handler() {
         private var request: AeolusRequest? = null
