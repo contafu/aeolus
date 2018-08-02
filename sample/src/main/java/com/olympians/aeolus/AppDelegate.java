@@ -9,8 +9,6 @@ public class AppDelegate extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        AeolusConfig.INSTANCE
-                .setHost("http://www.baidu.com/")
-                .setHostnameVerifier((hostname, session) -> true);
+        AeolusConfig.INSTANCE.setHost("");
     }
 }

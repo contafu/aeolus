@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.button).setOnClickListener(v -> {
             new Aeolus.Builder<LoginResponse>()
-                    .addRequest(new LoginRequest())
+                    .addRequest(new Request())
                     .addCallback(new OnAeolusCallback<LoginResponse>() {
                         @Override
                         public void onFailure(@NotNull AeolusException exception) {
