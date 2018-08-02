@@ -17,16 +17,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.button).setOnClickListener(v -> {
-            new Aeolus.Builder<LoginResponse>()
+            new Aeolus.Builder<Response>()
                     .addRequest(new Request())
-                    .addCallback(new OnAeolusCallback<LoginResponse>() {
+                    .addCallback(new OnAeolusCallback<Response>() {
                         @Override
                         public void onFailure(@NotNull AeolusException exception) {
 
                         }
 
                         @Override
-                        public void onSuccess(LoginResponse response) {
+                        public void onSuccess(Response response) {
 
                         }
                     })
