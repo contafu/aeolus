@@ -5,6 +5,8 @@
 
 ## 下载
 
+下载 [Jar][1] 或:
+
 ```groovy
 repositories {
     maven { url 'https://jitpack.io' }
@@ -90,3 +92,5 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+    
+    [1]:https://github-production-release-asset-2e65be.s3.amazonaws.com/142985379/8b1858e2-9691-11e8-9170-4104978c3dd1?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20180802%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20180802T122123Z&X-Amz-Expires=300&X-Amz-Signature=03e0f9f29b6cf7e57d5711160a748ed2544a71a0036eed59020daa98bedaa999&X-Amz-SignedHeaders=host&actor_id=6076731&response-content-disposition=attachment%3B%20filename%3Daeolus-0.0.4.jar&response-content-type=application%2Foctet-stream

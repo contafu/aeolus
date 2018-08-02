@@ -45,6 +45,12 @@ task generateSourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
+task generateJar(type: Jar){
+    group = 'jar'
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'classes'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
