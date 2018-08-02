@@ -8,6 +8,7 @@ import com.olympians.aeolus.callback.OnAeolusCallback
 import com.olympians.aeolus.callback.OnAeolusEnd
 import com.olympians.aeolus.callback.OnAeolusStart
 import com.olympians.aeolus.config.AeolusConfig
+import com.olympians.aeolus.exception.AeolusException
 import com.olympians.aeolus.utils.AeolusTools
 import com.olympians.aeolus.utils.AnnotationTools
 import okhttp3.OkHttpClient
@@ -74,6 +75,7 @@ object Aeolus {
                     if (response.isSuccessful) {
                         val code = response.code()
                         val bodyString = response.body()?.string()
+
                         sendMessage(Message().apply {
                             what = 0
                             data = Bundle().apply {
@@ -115,20 +117,20 @@ object Aeolus {
                                     val obj = JSON.parseObject<T>(bodyString, argsType)
                                     callback?.onSuccess(obj)
                                 } catch (e: Exception) {
-                                    callback?.onFailure(AEOLUS_CODE_JSON_ERROR, e.localizedMessage)
+                                    callback?.onFailure(AeolusException(code = AEOLUS_CODE_JSON_ERROR, message = e.localizedMessage))
                                 }
                             } else {
                                 throw Exception("")
                             }
                         } else {
-                            callback?.onFailure(code, null)
+                            callback?.onFailure(AeolusException(code = code))
                         }
                     }
                 }
                 1 -> {
                     with(msg.data) {
                         val errMsg = getString(RESPONSE_BODY)
-                        callback?.onFailure(AEOLUS_CODE_JSON_ERROR, errMsg)
+                        callback?.onFailure(AeolusException(code = AEOLUS_CODE_JSON_ERROR, message = errMsg))
 
                     }
                 }

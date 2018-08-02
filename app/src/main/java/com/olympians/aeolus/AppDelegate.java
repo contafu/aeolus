@@ -10,7 +10,7 @@ public class AppDelegate extends Application {
     public void onCreate() {
         super.onCreate();
         AeolusConfig.INSTANCE
-                .setHost("")
+                .setHost("http://www.baidu.com/")
                 .setHostnameVerifier((hostname, session) -> true);
     }
 }
