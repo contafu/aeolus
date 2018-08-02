@@ -11,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "0.0.4"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -41,14 +41,14 @@ android {
 
 task generateSourcesJar(type: Jar) {
     group = 'jar'
+    archiveName = 'aeolus-sources.jar'
     from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
 }
 
-task generateJar(type: Jar){
+task generateClassesJar(type: Jar) {
     group = 'jar'
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'classes'
+    archiveName = 'aeolus-classes.jar'
+    from "$buildDir.absolutePath/tmp/kotlin-classes/release/"
 }
 
 dependencies {

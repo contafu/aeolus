@@ -27,11 +27,11 @@ implementation 'com.github.kontafu:aeolus:latest-integer'
                 .setHostnameVerifier(HostnameVerifier hostnameVerifier);
 ```
 
-- `setHost(String host)`配置全局host
-- `addHeader(String key, String value)`添加单个Header
-- `addHeaders(Map<String, String> headers)`添加多个Header
-- `setHttpClient(OkHttpClient okHttpClient)`配置本地已存在的client实例
-- `setHostnameVerifier(HostnameVerifier hostnameVerifier`)配置https证书认证
+- `setHost(String host)` 配置全局host
+- `addHeader(String key, String value)` 添加单个Header
+- `addHeaders(Map<String, String> headers)` 添加多个Header
+- `setHttpClient(OkHttpClient okHttpClient)` 配置本地已存在的client实例
+- `setHostnameVerifier(HostnameVerifier hostnameVerifier`) 配置https证书认证
 
 ### 2、创建Request类并实现AeolusRequest接口
 ```java
@@ -40,8 +40,8 @@ public class Request implements AeolusRequest {
 }
 ```
 
-- host为可选参数。若不设置，则取全局配置；若设置则该Request优先使用本处配置；host是否以`/`结尾都可。
-- api是否以`/`开头或结尾都可
+- host 为可选参数。若不设置，则取全局配置；若设置则该Request优先使用本处配置；host是否以`/`结尾都可。
+- api 是否以`/`开头或结尾都可
 
 ### 3、创建Response类
 ```java
@@ -73,8 +73,8 @@ public class Response {
               .build();
 ```
 
-- `addOnStart()`当请求开始时回调
-- `addOnEnd()`当请求结束时回调，无论请求成功与否
+- `addOnStart()` 当请求开始时回调
+- `addOnEnd()` 当请求结束时回调，无论请求成功与否
 
 License
 -------
