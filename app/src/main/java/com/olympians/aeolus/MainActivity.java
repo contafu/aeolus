@@ -5,6 +5,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.olympians.aeolus.callback.OnAeolusCallback;
+import com.olympians.aeolus.exception.AeolusException;
+
+import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,12 +21,12 @@ public class MainActivity extends AppCompatActivity {
                     .addRequest(new LoginRequest())
                     .addCallback(new OnAeolusCallback<LoginResponse>() {
                         @Override
-                        public void onSuccess(LoginResponse response) {
+                        public void onFailure(@NotNull AeolusException exception) {
 
                         }
 
                         @Override
-                        public void onFailure(int code, @org.jetbrains.annotations.Nullable String errMsg) {
+                        public void onSuccess(LoginResponse response) {
 
                         }
                     })
