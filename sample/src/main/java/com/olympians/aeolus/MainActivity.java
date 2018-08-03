@@ -3,6 +3,7 @@ package com.olympians.aeolus;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.olympians.aeolus.callback.OnAeolusCallback;
 import com.olympians.aeolus.exception.AeolusException;
@@ -17,17 +18,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.button).setOnClickListener(v -> {
-            new Aeolus.Builder<LoginResponse>()
-                    .addRequest(new LoginRequest())
-                    .addCallback(new OnAeolusCallback<LoginResponse>() {
+            new Aeolus.Builder<Response>()
+                    .addRequest(new Request())
+                    .addCallback(new OnAeolusCallback<Response>() {
                         @Override
                         public void onFailure(@NotNull AeolusException exception) {
-
+                            Log.d("TAG", "onFailure: ");
                         }
 
                         @Override
-                        public void onSuccess(LoginResponse response) {
-
+                        public void onSuccess(Response response) {
+                            Log.e("TAG", "onSuccess: ");
                         }
                     })
                     .addOnStart(() -> {

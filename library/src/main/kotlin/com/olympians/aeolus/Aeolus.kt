@@ -74,7 +74,12 @@ object Aeolus {
 
                     if (response.isSuccessful) {
                         val code = response.code()
-                        val bodyString = response.body()?.string()
+                        var bodyString = response.body()?.string()
+
+                        val filter = AeolusConfig.getFilter()
+                        if (null != filter) {
+                            bodyString = filter.filter(bodyString)
+                        }
 
                         sendMessage(Message().apply {
                             what = 0
