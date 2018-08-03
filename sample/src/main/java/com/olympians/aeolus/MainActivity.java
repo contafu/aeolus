@@ -3,6 +3,7 @@ package com.olympians.aeolus;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.olympians.aeolus.callback.OnAeolusCallback;
 import com.olympians.aeolus.exception.AeolusException;
@@ -22,12 +23,12 @@ public class MainActivity extends AppCompatActivity {
                     .addCallback(new OnAeolusCallback<Response>() {
                         @Override
                         public void onFailure(@NotNull AeolusException exception) {
-
+                            Log.d("TAG", "onFailure: ");
                         }
 
                         @Override
                         public void onSuccess(Response response) {
-
+                            Log.e("TAG", "onSuccess: ");
                         }
                     })
                     .addOnStart(() -> {

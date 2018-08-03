@@ -14,6 +14,8 @@ object AeolusConfig {
 
     private var httpClient: OkHttpClient? = null
 
+    private var filter: AeolusFilter? = null
+
     internal fun getHost() = this.host
 
     internal fun getHeaders(): MutableMap<String, String> = this.headerMap
@@ -21,6 +23,8 @@ object AeolusConfig {
     internal fun getHostnameVerifier(): HostnameVerifier? = this.hostnameVerifier
 
     internal fun getHttpClient(): OkHttpClient? = this.httpClient
+
+    internal fun getFilter(): AeolusFilter? = this.filter
 
     fun setHost(host: String): AeolusConfig {
         this.host = host
@@ -48,6 +52,11 @@ object AeolusConfig {
 
     fun setHttpClient(httpClient: OkHttpClient): AeolusConfig {
         this.httpClient = httpClient
+        return this
+    }
+
+    fun addFilter(filter: AeolusFilter): AeolusConfig {
+        this.filter = filter
         return this
     }
 

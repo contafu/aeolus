@@ -24,7 +24,8 @@ implementation 'com.github.kontafu:aeolus:latest-integer'
                 .addHeader(String key, String value)
                 .addHeaders(Map<String, String> headers)
                 .setHttpClient(OkHttpClient okHttpClient)
-                .setHostnameVerifier(HostnameVerifier hostnameVerifier);
+                .setHostnameVerifier(HostnameVerifier hostnameVerifier)
+                .addFilter(AeolusFilter aeolusFilter);
 ```
 
 - `setHost(String host)` 配置全局host
@@ -32,6 +33,7 @@ implementation 'com.github.kontafu:aeolus:latest-integer'
 - `addHeaders(Map<String, String> headers)` 添加多个Header
 - `setHttpClient(OkHttpClient okHttpClient)` 配置本地已存在的client实例
 - `setHostnameVerifier(HostnameVerifier hostnameVerifier`) 配置https证书认证
+- `.addFilter(AeolusFilter aeolusFilter)` 配置请求过滤器
 
 ### 2、创建Request类并实现AeolusRequest接口
 ```java
