@@ -18,7 +18,7 @@ implementation 'com.github.kontafu:aeolus:latest-integer'
 ## 使用
 
 ### 1、Application中初始化配置
-```
+```java
     AeolusConfig.INSTANCE
                 .setHost(String host)
                 .addHeader(String key, String value)
