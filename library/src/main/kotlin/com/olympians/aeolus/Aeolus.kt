@@ -12,6 +12,7 @@ import com.olympians.aeolus.exception.AeolusException
 import com.olympians.aeolus.utils.AeolusTools
 import com.olympians.aeolus.utils.AnnotationTools
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import java.lang.reflect.ParameterizedType
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
@@ -20,7 +21,10 @@ object Aeolus {
 
     private const val RESPONSE_BODY = "BODY"
     private const val RESPONSE_CODE = "CODE"
+    const val AEOLUS_CODE_OK = 0x00
     const val AEOLUS_CODE_JSON_ERROR = 0x01
+    const val AEOLUS_CODE_SOCKET_ERROR = 0x02
+    const val AEOLUS_CODE_INTERNAL_ERROR = 0x03
 
     private val client = AeolusConfig.getHttpClient().let {
         it ?: AeolusConfig.getHostnameVerifier().let {
@@ -69,8 +73,9 @@ object Aeolus {
             Thread(Runnable {
                 val request = AeolusTools.buildRequest(AnnotationTools.extractParams(request))
 
+                var response: Response? = null
                 try {
-                    val response = client.newCall(request).execute()
+                    response = client.newCall(request).execute()
 
                     if (response.isSuccessful) {
                         val code = response.code()
@@ -84,8 +89,8 @@ object Aeolus {
                         sendMessage(Message().apply {
                             what = 0
                             data = Bundle().apply {
-                                putString(RESPONSE_BODY, bodyString)
                                 putInt(RESPONSE_CODE, code)
+                                putString(RESPONSE_BODY, bodyString)
                             }
                         })
                     } else {
@@ -98,7 +103,18 @@ object Aeolus {
                         })
                     }
                 } catch (e: SocketTimeoutException) {
-                    e.printStackTrace()
+                    sendMessage(Message().apply {
+                        what = 2
+                        data = Bundle().apply {
+                            putString(RESPONSE_BODY, e.localizedMessage)
+                        }
+                    })
+                } finally {
+                    try {
+                        response?.close()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
             }).start()
         }
@@ -117,7 +133,6 @@ object Aeolus {
                             if (type is ParameterizedType) {
                                 val argsTypes = type.actualTypeArguments
                                 val argsType = argsTypes?.get(0)
-
                                 try {
                                     val obj = JSON.parseObject<T>(bodyString, argsType)
                                     callback?.onSuccess(obj)
@@ -125,7 +140,7 @@ object Aeolus {
                                     callback?.onFailure(AeolusException(code = AEOLUS_CODE_JSON_ERROR, message = e.localizedMessage))
                                 }
                             } else {
-                                throw Exception("")
+                                callback?.onFailure(AeolusException(code = AEOLUS_CODE_INTERNAL_ERROR, message = "type is not ParameterizedType"))
                             }
                         } else {
                             callback?.onFailure(AeolusException(code = code))
@@ -136,7 +151,12 @@ object Aeolus {
                     with(msg.data) {
                         val errMsg = getString(RESPONSE_BODY)
                         callback?.onFailure(AeolusException(code = AEOLUS_CODE_JSON_ERROR, message = errMsg))
-
+                    }
+                }
+                2 -> {
+                    with(msg.data) {
+                        val errMsg = getString(RESPONSE_BODY)
+                        callback?.onFailure(AeolusException(code = AEOLUS_CODE_SOCKET_ERROR, message = errMsg))
                     }
                 }
             }
