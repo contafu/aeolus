@@ -32,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                     })
                     .addOnStart(() -> {
-
+                        Log.d("TAG", "addOnStart: ");
                     })
                     .addOnEnd(() -> {
-
+                        Log.d("TAG", "addOnEnd: ");
                     })
                     .build();
         });
