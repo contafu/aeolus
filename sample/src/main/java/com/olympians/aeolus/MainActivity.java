@@ -23,12 +23,12 @@ public class MainActivity extends AppCompatActivity {
                     .addCallback(new OnAeolusCallback<Response>() {
                         @Override
                         public void onFailure(@NotNull AeolusException exception) {
-                            Log.d("TAG", "onFailure: ");
+                            Log.e("TAG", "onFailure: ");
                         }
 
                         @Override
                         public void onSuccess(Response response) {
-                            Log.e("TAG", "onSuccess: ");
+                            Log.d("TAG", "onSuccess: ");
                         }
                     })
                     .addOnStart(() -> {
