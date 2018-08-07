@@ -112,7 +112,7 @@ object Aeolus {
                 } finally {
                     try {
                         response?.close()
-                    } catch (e: Exception) {
+                    } catch (e: NoSuchMethodError) {
                         e.printStackTrace()
                     }
                 }
