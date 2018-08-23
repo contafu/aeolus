@@ -14,6 +14,7 @@ import com.olympians.aeolus.utils.AnnotationTools
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import java.lang.reflect.ParameterizedType
+import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
@@ -24,7 +25,8 @@ object Aeolus {
     const val AEOLUS_CODE_OK = 0x00
     const val AEOLUS_CODE_JSON_ERROR = 0x01
     const val AEOLUS_CODE_SOCKET_ERROR = 0x02
-    const val AEOLUS_CODE_INTERNAL_ERROR = 0x03
+    const val AEOLUS_CODE_CONNECT_ERROR = 0x03
+    const val AEOLUS_CODE_INTERNAL_ERROR = 0x04
 
     private val client = AeolusConfig.getHttpClient().let {
         it ?: AeolusConfig.getHostnameVerifier().let {
@@ -109,6 +111,13 @@ object Aeolus {
                             putString(RESPONSE_BODY, e.localizedMessage)
                         }
                     })
+                } catch (e: ConnectException) {
+                    sendMessage(Message().apply {
+                        what = 3
+                        data = Bundle().apply {
+                            putString(RESPONSE_BODY, e.localizedMessage)
+                        }
+                    })
                 } finally {
                     try {
                         response?.close()
@@ -157,6 +166,12 @@ object Aeolus {
                     with(msg.data) {
                         val errMsg = getString(RESPONSE_BODY)
                         callback?.onFailure(AeolusException(code = AEOLUS_CODE_SOCKET_ERROR, message = errMsg))
+                    }
+                }
+                3 -> {
+                    with(msg.data) {
+                        val errMsg = getString(RESPONSE_BODY)
+                        callback?.onFailure(AeolusException(code = AEOLUS_CODE_CONNECT_ERROR, message = errMsg))
                     }
                 }
             }
