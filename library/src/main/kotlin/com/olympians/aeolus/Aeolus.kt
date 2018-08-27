@@ -27,6 +27,7 @@ object Aeolus {
     const val AEOLUS_CODE_SOCKET_ERROR = 0x02
     const val AEOLUS_CODE_CONNECT_ERROR = 0x03
     const val AEOLUS_CODE_INTERNAL_ERROR = 0x04
+    const val AEOLUS_CODE_NOT_FOUND = 0x05
 
     private val client = AeolusConfig.getHttpClient().let {
         it ?: AeolusConfig.getHostnameVerifier().let {
@@ -97,10 +98,12 @@ object Aeolus {
                         })
                     } else {
                         val msg = response.message()
+                        val code = response.code()
                         sendMessage(Message().apply {
                             what = 1
                             data = Bundle().apply {
                                 putString(RESPONSE_BODY, msg)
+                                putInt(RESPONSE_CODE, code)
                             }
                         })
                     }
@@ -159,7 +162,15 @@ object Aeolus {
                 1 -> {
                     with(msg.data) {
                         val errMsg = getString(RESPONSE_BODY)
-                        callback?.onFailure(AeolusException(code = AEOLUS_CODE_JSON_ERROR, message = errMsg))
+                        val errCode = getInt(RESPONSE_CODE)
+                        when (errCode) {
+                            404 -> {
+                                callback?.onFailure(AeolusException(code = AEOLUS_CODE_NOT_FOUND, message = errMsg))
+                            }
+                            else -> {
+                                callback?.onFailure(AeolusException(code = AEOLUS_CODE_JSON_ERROR, message = errMsg))
+                            }
+                        }
                     }
                 }
                 2 -> {
