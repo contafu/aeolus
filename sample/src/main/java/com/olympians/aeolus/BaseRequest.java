@@ -5,7 +5,8 @@ import com.olympians.aeolus.annotations.Query;
 @Query
 public class BaseRequest {
 
-    private String name = "tangchao";
+    private String name;
+
     private int age;
 
     public String getName() {
