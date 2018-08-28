@@ -22,6 +22,7 @@ object Aeolus {
 
     private const val RESPONSE_BODY = "BODY"
     private const val RESPONSE_CODE = "CODE"
+
     const val AEOLUS_CODE_OK = 0x00
     const val AEOLUS_CODE_JSON_ERROR = 0x01
     const val AEOLUS_CODE_SOCKET_ERROR = 0x02
@@ -33,9 +34,9 @@ object Aeolus {
         it ?: AeolusConfig.getHostnameVerifier().let {
             val client = OkHttpClient
                     .Builder()
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .writeTimeout(30, TimeUnit.SECONDS)
-                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(10, TimeUnit.SECONDS)
+                    .writeTimeout(10, TimeUnit.SECONDS)
+                    .connectTimeout(10, TimeUnit.SECONDS)
             if (null != it) {
                 client.hostnameVerifier(it)
             }
@@ -86,7 +87,7 @@ object Aeolus {
 
                         val filter = AeolusConfig.getFilter()
                         if (null != filter) {
-                            bodyString = filter.filter(bodyString)
+                            bodyString = filter.filter(request.url().url().path, bodyString)
                         }
 
                         sendMessage(Message().apply {
