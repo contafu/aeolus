@@ -5,14 +5,16 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 group = 'com.github.kontafu'
 
+def vName = "0.1.0"
+
 android {
     compileSdkVersion 27
 
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 8
-        versionName "0.0.8"
+        versionCode 10
+        versionName vName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -39,15 +41,15 @@ android {
     }
 }
 
-task generateSourcesJar(type: Jar) {
+task generateSourceJar(type: Jar) {
     group = 'jar'
-    archiveName = 'aeolus-sources.jar'
+    archiveName = "aeolus-sources-${vName}.jar"
     from android.sourceSets.main.java.srcDirs
 }
 
-task generateClassesJar(type: Jar) {
+task generateClassJar(type: Jar) {
     group = 'jar'
-    archiveName = 'aeolus-classes.jar'
+    archiveName = "aeolus-classes-${vName}.jar"
     from "$buildDir.absolutePath/tmp/kotlin-classes/release/"
 }
 
