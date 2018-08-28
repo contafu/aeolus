@@ -2,6 +2,6 @@ package com.olympians.aeolus.config
 
 interface AeolusFilter {
 
-    fun filter(body: String?): String?
+    fun filter(url: String?, body: String?): String?
 
 }

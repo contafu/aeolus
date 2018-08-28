@@ -4,6 +4,7 @@ import android.text.TextUtils
 import com.olympians.aeolus.AeolusRequest
 import com.olympians.aeolus.annotations.Get
 import com.olympians.aeolus.annotations.Post
+import com.olympians.aeolus.annotations.Query
 import com.olympians.aeolus.config.AeolusConfig
 
 internal object AnnotationTools {
@@ -78,18 +79,31 @@ internal object AnnotationTools {
             map[MAP_KEY_METHOD] = MAP_VALUE_POST
         }
 
+        recursion(request, clazz, map)
+
+        return map
+    }
+
+    private fun recursion(classInstance: AeolusRequest, clazz: Class<in AeolusRequest>, map: MutableMap<String, Any>, first: Boolean = true) {
         clazz.declaredFields.filter {
-            it.name.let { null != it && "\$change" != it && "serialVersionUID" != it }
+            it.name.let {
+                null != it && "\$change" != it
+                        && "serialVersionUID" != it
+                        && "shadow\$_klass" != it
+                        && "shadow\$_monitor" != it
+            }
         }.forEach {
             it.isAccessible = true
             val k = it.name
-            val v = it.get(request)
+            val v = it.get(classInstance)
             if (!TextUtils.isEmpty(k) && null != v) {
                 map[k] = v
             }
         }
 
-        return map
+        if ((null != clazz.superclass.getAnnotation(Query::class.java))) {
+            recursion(classInstance, clazz.superclass, map, false)
+        }
     }
 
 }
