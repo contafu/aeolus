@@ -31,14 +31,14 @@ object Aeolus {
     const val AEOLUS_CODE_NOT_FOUND = 0x05
 
     private val client = AeolusConfig.getHttpClient().let {
-        it ?: AeolusConfig.getHostnameVerifier().let {
+        it ?: AeolusConfig.getHostnameVerifier().let { hostnameVerifier ->
             val client = OkHttpClient
                     .Builder()
                     .readTimeout(10, TimeUnit.SECONDS)
                     .writeTimeout(10, TimeUnit.SECONDS)
                     .connectTimeout(10, TimeUnit.SECONDS)
             if (null != it) {
-                client.hostnameVerifier(it)
+                client.hostnameVerifier(hostnameVerifier)
             }
             client.build()
         }
@@ -147,7 +147,7 @@ object Aeolus {
                                 val argsTypes = type.actualTypeArguments
                                 val argsType = argsTypes?.get(0)
                                 try {
-                                    val obj = JSON.parseObject<T>(bodyString, argsType)
+                                    val obj = JSON.parseObject<T?>(bodyString, argsType)
                                     callback?.onSuccess(obj)
                                 } catch (e: Exception) {
                                     callback?.onFailure(AeolusException(code = AEOLUS_CODE_JSON_ERROR, message = e.localizedMessage))
