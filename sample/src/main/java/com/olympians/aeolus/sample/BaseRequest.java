@@ -1,4 +1,4 @@
-package com.olympians.aeolus;
+package com.olympians.aeolus.sample;
 
 import com.olympians.aeolus.annotations.Query;
 
