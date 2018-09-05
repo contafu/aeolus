@@ -2,7 +2,7 @@ package com.olympians.aeolus;
 
 import com.olympians.aeolus.annotations.Get;
 
-@Get(host = "http://192.168.1.20", api = "/mobile/app-name")
+@Get(host = "http://www.baidu.com/")
 public class Request extends BaseRequest implements AeolusRequest {
 
     private int gender;
