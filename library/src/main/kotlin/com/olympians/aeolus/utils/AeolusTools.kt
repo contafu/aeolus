@@ -12,7 +12,7 @@ internal object AeolusTools {
 
     internal fun buildRequest(map: MutableMap<String, Any>): Request {
         val request = Request.Builder().apply {
-            AeolusConfig.getHeaders().forEach { k, v ->
+            AeolusConfig.getHeaders().forEach { (k, v) ->
                 header(k, v)
             }
         }
