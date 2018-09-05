@@ -1,10 +1,11 @@
-package com.olympians.aeolus;
+package com.olympians.aeolus.sample;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.olympians.aeolus.Aeolus;
 import com.olympians.aeolus.callback.OnAeolusCallback;
 import com.olympians.aeolus.exception.AeolusException;
 
