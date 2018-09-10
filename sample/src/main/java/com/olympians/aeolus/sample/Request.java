@@ -7,7 +7,7 @@ import java.util.List;
 
 import static com.olympians.aeolus.ContentTypeKt.ContentType_JSON;
 
-@Post(host = "http://10.49.3.34:8080", api = "ctuom-web/mobile/update-my-apps", contentType = ContentType_JSON)
+@Post(host = "http://192.168.1.10:3000", api = "test/submit", contentType = ContentType_JSON)
 public class Request implements AeolusRequest {
 
     private List<String> appName;

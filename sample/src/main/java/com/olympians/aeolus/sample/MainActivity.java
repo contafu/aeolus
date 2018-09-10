@@ -22,9 +22,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         List<String> arrayList = new ArrayList<>();
-        arrayList.add("苏宁易购");
-        arrayList.add("苏宁体育");
-        arrayList.add("苏宁小店");
+        arrayList.add("Java");
+        arrayList.add("C++");
+        arrayList.add("Python");
         Request request = new Request();
         request.setAppName(arrayList);
 
