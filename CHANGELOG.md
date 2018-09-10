@@ -1,3 +1,6 @@
+## `0.2.0`
+- 增加 json 方式 post 请求
+
 ## `0.1.2`
 - 修复部分手机上 kotlin 执行 forEach 高阶函数时报 ClassNotFoundException 异常
 - 升级 kotlin to 1.2.61

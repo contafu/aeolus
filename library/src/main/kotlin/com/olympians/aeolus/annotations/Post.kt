@@ -1,5 +1,8 @@
 package com.olympians.aeolus.annotations
 
+import java.lang.annotation.Inherited
+
+@Inherited
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-internal annotation class Post(val host: String = "", val api: String = "")
+annotation class Post(val host: String = "", val api: String = "", val contentType: String = "")
