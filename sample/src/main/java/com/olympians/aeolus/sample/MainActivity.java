@@ -11,6 +11,9 @@ import com.olympians.aeolus.exception.AeolusException;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -18,9 +21,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        List<String> arrayList = new ArrayList<>();
+        arrayList.add("苏宁易购");
+        arrayList.add("苏宁体育");
+        arrayList.add("苏宁小店");
+        Request request = new Request();
+        request.setAppName(arrayList);
+
         findViewById(R.id.button).setOnClickListener(v -> {
             new Aeolus.Builder<Response>()
-                    .addRequest(new Request())
+                    .addRequest(request)
                     .addCallback(new OnAeolusCallback<Response>() {
                         @Override
                         public void onFailure(@NotNull AeolusException exception) {

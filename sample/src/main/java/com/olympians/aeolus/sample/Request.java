@@ -1,19 +1,22 @@
 package com.olympians.aeolus.sample;
 
 import com.olympians.aeolus.AeolusRequest;
-import com.olympians.aeolus.annotations.Get;
-import com.olympians.aeolus.sample.BaseRequest;
+import com.olympians.aeolus.annotations.Post;
 
-@Get(host = "http://www.baidu.com/")
-public class Request extends BaseRequest implements AeolusRequest {
+import java.util.List;
 
-    private int gender;
+import static com.olympians.aeolus.ContentTypeKt.ContentType_JSON;
 
-    public int getGender() {
-        return gender;
+@Post(host = "http://10.49.3.34:8080", api = "ctuom-web/mobile/update-my-apps", contentType = ContentType_JSON)
+public class Request implements AeolusRequest {
+
+    private List<String> appName;
+
+    public List<String> getAppName() {
+        return appName;
     }
 
-    public void setGender(int gender) {
-        this.gender = gender;
+    public void setAppName(List<String> appName) {
+        this.appName = appName;
     }
 }

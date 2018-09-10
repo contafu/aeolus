@@ -1,6 +1,7 @@
 package com.olympians.aeolus.utils
 
 import android.text.TextUtils
+import com.alibaba.fastjson.JSON
 import com.olympians.aeolus.AeolusRequest
 import com.olympians.aeolus.annotations.Get
 import com.olympians.aeolus.annotations.Post
@@ -11,7 +12,10 @@ internal object AnnotationTools {
 
     internal const val MAP_KEY_HOST = "HOST"
     internal const val MAP_KEY_API = "API"
+    internal const val MAP_KEY_TYPE = "TYPE"
     internal const val MAP_KEY_METHOD = "METHOD"
+    internal const val MAP_KEY_BODY = "BODY"
+
     internal const val MAP_VALUE_GET = "GET"
     internal const val MAP_VALUE_POST = "POST"
 
@@ -56,11 +60,14 @@ internal object AnnotationTools {
             }
 
             map[MAP_KEY_METHOD] = MAP_VALUE_GET
+
+            recursion(request, clazz, map)
         }
 
         if (null != postAnno) {
             val postHost = postAnno.host.trim()
             val postApi = postAnno.api.trim()
+            val contentType = postAnno.contentType
 
             if ("" == postHost) {
                 if (null != host && !host.isEmpty()) {
@@ -76,15 +83,20 @@ internal object AnnotationTools {
                 map[MAP_KEY_API] = postApi
             }
 
+            if ("" != contentType) {
+                map[MAP_KEY_TYPE] = contentType
+            }
+
+            val jsonString = JSON.toJSONString(request)
+
+            map[MAP_KEY_BODY] = jsonString
+
             map[MAP_KEY_METHOD] = MAP_VALUE_POST
         }
-
-        recursion(request, clazz, map)
-
         return map
     }
 
-    private fun recursion(classInstance: AeolusRequest, clazz: Class<in AeolusRequest>, map: MutableMap<String, Any>, first: Boolean = true) {
+    private fun recursion(classInstance: AeolusRequest, clazz: Class<in AeolusRequest>, map: MutableMap<String, Any>) {
         clazz.declaredFields.filter {
             it.name.let {
                 null != it && "\$change" != it
@@ -102,7 +114,7 @@ internal object AnnotationTools {
         }
 
         if ((null != clazz.superclass.getAnnotation(Query::class.java))) {
-            recursion(classInstance, clazz.superclass, map, false)
+            recursion(classInstance, clazz.superclass, map)
         }
     }
 
