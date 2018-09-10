@@ -1,3 +1,6 @@
+## `0.2.1`
+- 修复依赖包 `META-INF/library_release.kotlin_module` 重复冲突
+
 ## `0.2.0`
 - 增加 json 方式 post 请求
 
