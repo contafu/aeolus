@@ -1,3 +1,6 @@
+## `0.2.2`
+- 增加请求成功但业务失败的处理
+
 ## `0.2.1`
 - 修复依赖包 `META-INF/library_release.kotlin_module` 重复冲突
 

@@ -50,7 +50,7 @@ public class Request implements AeolusRequest {
 
 - host 为可选参数。若不设置，则取全局配置；若设置则该Request优先使用本处配置；host是否以`/`结尾都可。
 - api 是否以`/`开头或结尾都可
-- `如果Request继承于父类，则父类用@Query注解修饰，否则父类变量不会被检索添加`
+- `如果Request继承于父类，则父类用 `@Query` 注解修饰，否则父类变量不会被检索添加`
 
 ### 3、创建Response类
 ```java
