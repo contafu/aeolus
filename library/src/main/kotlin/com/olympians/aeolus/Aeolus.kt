@@ -3,6 +3,7 @@ package com.olympians.aeolus
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.text.TextUtils
 import com.alibaba.fastjson.JSON
 import com.olympians.aeolus.callback.OnAeolusCallback
 import com.olympians.aeolus.callback.OnAeolusEnd
@@ -20,15 +21,35 @@ import java.util.concurrent.TimeUnit
 
 object Aeolus {
 
-    private const val RESPONSE_BODY = "BODY"
     private const val RESPONSE_CODE = "CODE"
+    private const val RESPONSE_BODY = "BODY"
 
     const val AEOLUS_CODE_OK = 0x00
+    /**
+     * Aeolus 解析json异常
+     */
     const val AEOLUS_CODE_JSON_ERROR = 0x01
+    /**
+     * 请求超时
+     */
     const val AEOLUS_CODE_SOCKET_ERROR = 0x02
+    /**
+     * 连接超时
+     */
     const val AEOLUS_CODE_CONNECT_ERROR = 0x03
+    /**
+     * Aeolus 内部异常
+     */
     const val AEOLUS_CODE_INTERNAL_ERROR = 0x04
-    const val AEOLUS_CODE_NOT_FOUND = 0x05
+    /**
+     * 业务异常
+     */
+    const val BUSINESS_EXCEPTION = 0x05
+
+    private const val SocketTimeoutException_Code = -1
+    private const val ConnectException = -2
+    private const val Failure = 0
+    private const val Success = 1
 
     private val client = AeolusConfig.getHttpClient().let {
         it ?: AeolusConfig.getHostnameVerifier().let { hostnameVerifier ->
@@ -37,7 +58,7 @@ object Aeolus {
                     .readTimeout(10, TimeUnit.SECONDS)
                     .writeTimeout(10, TimeUnit.SECONDS)
                     .connectTimeout(10, TimeUnit.SECONDS)
-            if (null != it) {
+            if (null != hostnameVerifier) {
                 client.hostnameVerifier(hostnameVerifier)
             }
             client.build()
@@ -81,9 +102,9 @@ object Aeolus {
                 try {
                     response = client.newCall(request).execute()
 
+                    val httpCode = response.code()
                     if (response.isSuccessful) {
-                        val code = response.code()
-                        var bodyString = response.body()?.string()
+                        var bodyString: String? = response.body()?.string()
 
                         val filter = AeolusConfig.getFilter()
                         if (null != filter) {
@@ -91,33 +112,33 @@ object Aeolus {
                         }
 
                         sendMessage(Message().apply {
-                            what = 0
+                            what = Success
                             data = Bundle().apply {
-                                putInt(RESPONSE_CODE, code)
+                                putInt(RESPONSE_CODE, httpCode)
                                 putString(RESPONSE_BODY, bodyString)
                             }
                         })
                     } else {
+                        val bodyString: String? = response.body()?.string()
                         val msg = response.message()
-                        val code = response.code()
                         sendMessage(Message().apply {
-                            what = 1
+                            what = Failure
                             data = Bundle().apply {
-                                putString(RESPONSE_BODY, msg)
-                                putInt(RESPONSE_CODE, code)
+                                putInt(RESPONSE_CODE, httpCode)
+                                putString(RESPONSE_BODY, bodyString ?: msg)
                             }
                         })
                     }
                 } catch (e: SocketTimeoutException) {
                     sendMessage(Message().apply {
-                        what = 2
+                        what = SocketTimeoutException_Code
                         data = Bundle().apply {
                             putString(RESPONSE_BODY, e.localizedMessage)
                         }
                     })
                 } catch (e: ConnectException) {
                     sendMessage(Message().apply {
-                        what = 3
+                        what = ConnectException
                         data = Bundle().apply {
                             putString(RESPONSE_BODY, e.localizedMessage)
                         }
@@ -135,12 +156,12 @@ object Aeolus {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
             when (msg?.what) {
-                0 -> {
+                Success -> {
                     with(msg.data) {
-                        val bodyString = getString(RESPONSE_BODY)
                         val code = getInt(RESPONSE_CODE)
+                        val bodyString: String? = getString(RESPONSE_BODY)
 
-                        if (200 == code) {
+                        if (200 == code && !TextUtils.isEmpty(bodyString)) {
                             val types = callback?.javaClass?.genericInterfaces
                             val type = types?.get(0)
                             if (type is ParameterizedType) {
@@ -155,32 +176,23 @@ object Aeolus {
                             } else {
                                 callback?.onFailure(AeolusException(code = AEOLUS_CODE_INTERNAL_ERROR, message = "type is not ParameterizedType"))
                             }
-                        } else {
-                            callback?.onFailure(AeolusException(code = code))
                         }
                     }
                 }
-                1 -> {
+                Failure -> {
                     with(msg.data) {
-                        val errMsg = getString(RESPONSE_BODY)
                         val errCode = getInt(RESPONSE_CODE)
-                        when (errCode) {
-                            404 -> {
-                                callback?.onFailure(AeolusException(code = AEOLUS_CODE_NOT_FOUND, message = errMsg))
-                            }
-                            else -> {
-                                callback?.onFailure(AeolusException(code = AEOLUS_CODE_JSON_ERROR, message = errMsg))
-                            }
-                        }
+                        val errMsg = getString(RESPONSE_BODY)
+                        callback?.onFailure(AeolusException(code = BUSINESS_EXCEPTION, businessCode = errCode, message = errMsg))
                     }
                 }
-                2 -> {
+                SocketTimeoutException_Code -> {
                     with(msg.data) {
                         val errMsg = getString(RESPONSE_BODY)
                         callback?.onFailure(AeolusException(code = AEOLUS_CODE_SOCKET_ERROR, message = errMsg))
                     }
                 }
-                3 -> {
+                ConnectException -> {
                     with(msg.data) {
                         val errMsg = getString(RESPONSE_BODY)
                         callback?.onFailure(AeolusException(code = AEOLUS_CODE_CONNECT_ERROR, message = errMsg))
