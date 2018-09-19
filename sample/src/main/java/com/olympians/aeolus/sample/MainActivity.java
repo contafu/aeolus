@@ -11,9 +11,6 @@ import com.olympians.aeolus.exception.AeolusException;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -21,12 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<String> arrayList = new ArrayList<>();
-        arrayList.add("Java");
-        arrayList.add("C++");
-        arrayList.add("Python");
         Request request = new Request();
-        request.setAppName(arrayList);
 
         findViewById(R.id.button).setOnClickListener(v -> {
             new Aeolus.Builder<Response>()
@@ -34,19 +26,19 @@ public class MainActivity extends AppCompatActivity {
                     .addCallback(new OnAeolusCallback<Response>() {
                         @Override
                         public void onFailure(@NotNull AeolusException exception) {
-                            Log.e("TAG", "onFailure: ");
+                            Log.e("TAG", "code: " + exception.getCode());
+                            Log.e("TAG", "businessCode: " + exception.getBusinessCode());
+                            Log.e("TAG", "msg: " + exception.getMessage());
                         }
 
                         @Override
                         public void onSuccess(Response response) {
-                            Log.d("TAG", "onSuccess: ");
+                            Log.d("TAG", "onSuccess: " + response.toString());
                         }
                     })
                     .addOnStart(() -> {
-                        Log.d("TAG", "addOnStart: ");
                     })
                     .addOnEnd(() -> {
-                        Log.d("TAG", "addOnEnd: ");
                     })
                     .build();
         });
