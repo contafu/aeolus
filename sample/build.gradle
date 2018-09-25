@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 27
+    buildToolsVersion '28.0.3'
+
     defaultConfig {
         applicationId "com.olympians.aeolus"
         minSdkVersion 15

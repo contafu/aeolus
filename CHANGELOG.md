@@ -1,3 +1,10 @@
+## `0.2.3`
+- 升级 kotlin to 1.2.71
+- 升级 gradle to 4.10.2
+- 升级 android gradle plugin to 3.2.0
+- 升级 fastjson to 1.1.70.android
+- 升级 buildToolsVersion to 28.0.3
+
 ## `0.2.2`
 - 增加请求成功但业务失败的处理
 
