@@ -1,3 +1,6 @@
+## `0.2.4`
+- 修复 kotlin module 打包提示重复的问题
+
 ## `0.2.3`
 - 升级 kotlin to 1.2.71
 - 升级 gradle to 4.10.2
