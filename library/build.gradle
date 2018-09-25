@@ -5,10 +5,11 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 group = 'com.github.kontafu'
 
-def vName = "0.2.2"
+def vName = "0.2.3"
 
 android {
     compileSdkVersion 27
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         minSdkVersion 15
@@ -66,5 +67,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     compileOnly 'com.squareup.okhttp3:okhttp:3.11.0'
-    compileOnly 'com.alibaba:fastjson:1.2.47'
+    compileOnly 'com.alibaba:fastjson:1.1.70.android'
 }
