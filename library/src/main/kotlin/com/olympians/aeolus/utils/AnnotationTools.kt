@@ -7,6 +7,7 @@ import com.olympians.aeolus.annotations.Get
 import com.olympians.aeolus.annotations.Post
 import com.olympians.aeolus.annotations.Query
 import com.olympians.aeolus.config.AeolusConfig
+import java.net.URLEncoder
 
 internal object AnnotationTools {
 
@@ -109,7 +110,11 @@ internal object AnnotationTools {
             val k = it.name
             val v = it.get(classInstance)
             if (!TextUtils.isEmpty(k) && null != v) {
-                map[k] = v
+                if (v is String) {
+                    map[k] = URLEncoder.encode(v, "UTF-8")
+                } else {
+                    map[k] = v
+                }
             }
         }
 
