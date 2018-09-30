@@ -84,6 +84,23 @@ public class Response {
 
 - `addOnStart()` 当请求开始时回调
 - `addOnEnd()` 当请求结束时回调，无论请求成功与否
+-
+### 5、异常码
+```text
+    AEOLUS_CODE_OK 请求成功
+
+    AEOLUS_CODE_JSON_ERROR 解析json异常
+
+    AEOLUS_CODE_SOCKET_ERROR 请求超时
+
+    AEOLUS_CODE_CONNECT_ERROR 连接超时
+
+    AEOLUS_CODE_INTERNAL_ERROR 内部异常
+
+    AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR 域名解析异常
+
+    BUSINESS_EXCEPTION 业务异常
+```
 
 License
 -------
