@@ -17,6 +17,7 @@ import okhttp3.Response
 import java.lang.reflect.ParameterizedType
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
 object Aeolus {
@@ -45,9 +46,14 @@ object Aeolus {
      * 业务异常
      */
     const val BUSINESS_EXCEPTION = 0x05
+    /**
+     * 域名解析异常
+     */
+    const val AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR = 0x06
 
     private const val SocketTimeoutException_Code = -1
     private const val ConnectException = -2
+    private const val UnknownHostException = -3
     private const val Failure = 0
     private const val Success = 1
 
@@ -136,6 +142,13 @@ object Aeolus {
                             putString(RESPONSE_BODY, e.localizedMessage)
                         }
                     })
+                } catch (e: UnknownHostException) {
+                    sendMessage(Message().apply {
+                        what = UnknownHostException
+                        data = Bundle().apply {
+                            putString(RESPONSE_BODY, e.localizedMessage)
+                        }
+                    })
                 } catch (e: ConnectException) {
                     sendMessage(Message().apply {
                         what = ConnectException
@@ -196,6 +209,12 @@ object Aeolus {
                     with(msg.data) {
                         val errMsg = getString(RESPONSE_BODY)
                         callback?.onFailure(AeolusException(code = AEOLUS_CODE_CONNECT_ERROR, message = errMsg))
+                    }
+                }
+                UnknownHostException -> {
+                    with(msg.data) {
+                        val errMsg = getString(RESPONSE_BODY)
+                        callback?.onFailure(AeolusException(code = AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR, message = errMsg))
                     }
                 }
             }
