@@ -9,6 +9,8 @@ import com.olympians.aeolus.callback.OnAeolusCallback
 import com.olympians.aeolus.callback.OnAeolusEnd
 import com.olympians.aeolus.callback.OnAeolusStart
 import com.olympians.aeolus.config.AeolusConfig
+import com.olympians.aeolus.config.AeolusConfig.TIMEOUT_CONFIG_TIME
+import com.olympians.aeolus.config.AeolusConfig.TIMEOUT_CONFIG_UNIT
 import com.olympians.aeolus.exception.AeolusException
 import com.olympians.aeolus.utils.AeolusTools
 import com.olympians.aeolus.utils.AnnotationTools
@@ -57,18 +59,21 @@ object Aeolus {
     private const val Failure = 0
     private const val Success = 1
 
-    private val client = AeolusConfig.getHttpClient().let {
-        it ?: AeolusConfig.getHostnameVerifier().let { hostnameVerifier ->
-            val client = OkHttpClient
-                    .Builder()
-                    .readTimeout(10, TimeUnit.SECONDS)
-                    .writeTimeout(10, TimeUnit.SECONDS)
-                    .connectTimeout(10, TimeUnit.SECONDS)
-            if (null != hostnameVerifier) {
-                client.hostnameVerifier(hostnameVerifier)
+    private val client: OkHttpClient by lazy {
+        AeolusConfig.getHttpClient() ?: OkHttpClient.Builder().also {
+            val time: Long? = AeolusConfig.getTimeout()?.get(TIMEOUT_CONFIG_TIME) as Long?
+            val unit: TimeUnit? = AeolusConfig.getTimeout()?.get(TIMEOUT_CONFIG_UNIT) as TimeUnit?
+            if (null != time && 0L < time && null != unit) {
+                it.readTimeout(time, unit)
+                it.writeTimeout(time, unit)
+                it.connectTimeout(time, unit)
             }
-            client.build()
-        }
+
+            val hostnameVerifier = AeolusConfig.getHostnameVerifier()
+            if (null != hostnameVerifier) {
+                it.hostnameVerifier(hostnameVerifier)
+            }
+        }.build()
     }
 
     class Builder<T> : Handler() {

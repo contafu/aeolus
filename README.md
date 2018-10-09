@@ -23,17 +23,23 @@ implementation 'com.github.kontafu:aeolus:latest-integer'
                 .setHost(String host)
                 .addHeader(String key, String value)
                 .addHeaders(Map<String, String> headers)
+                .addFilter(AeolusFilter aeolusFilter)
                 .setHttpClient(OkHttpClient okHttpClient)
                 .setHostnameVerifier(HostnameVerifier hostnameVerifier)
-                .addFilter(AeolusFilter aeolusFilter);
+                .setTimeout(long timeout, TimeUnit unit)
 ```
 
 - `setHost(String host)` 配置全局host
 - `addHeader(String key, String value)` 添加单个Header
 - `addHeaders(Map<String, String> headers)` 添加多个Header
 - `setHttpClient(OkHttpClient okHttpClient)` 配置本地已存在的client实例
-- `setHostnameVerifier(HostnameVerifier hostnameVerifier`) 配置https证书认证
-- `.addFilter(AeolusFilter aeolusFilter)` 配置请求过滤器
+- `setHostnameVerifier(HostnameVerifier hostnameVerifier)` 配置https证书认证
+- `setTimeout(long timeout, TimeUnit unit)` 配置超时
+- `addFilter(AeolusFilter aeolusFilter)` 配置请求过滤器
+
+<em>当配置 setHttpClient 后 setHostnameVerifier 和 setTimeout 不生效</em>
+
+<hr>
 
 ### 2、创建Request类并实现AeolusRequest接口
 ```java
@@ -50,7 +56,10 @@ public class Request implements AeolusRequest {
 
 - host 为可选参数。若不设置，则取全局配置；若设置则该Request优先使用本处配置；host是否以`/`结尾都可。
 - api 是否以`/`开头或结尾都可
-- `如果Request继承于父类，则父类用 `@Query` 注解修饰，否则父类变量不会被检索添加`
+
+<em>如果Request继承于父类，则父类用 `@Query` 注解修饰，否则父类变量不会被检索添加`</em>
+
+<hr>
 
 ### 3、创建Response类
 ```java
@@ -58,12 +67,14 @@ public class Response {
 }
 ```
 
+<hr>
+
 ### 4、调用请求
 ```java
     new Aeolus.Builder<Response>()
               .addRequest(new Request())
               .addOnStart(() -> {
-            
+
               })
               .addCallback(new OnAeolusCallback<Response>() {
                   @Override
@@ -84,7 +95,9 @@ public class Response {
 
 - `addOnStart()` 当请求开始时回调
 - `addOnEnd()` 当请求结束时回调，无论请求成功与否
--
+
+<hr>
+
 ### 5、异常码
 ```text
     AEOLUS_CODE_OK 请求成功
@@ -101,6 +114,8 @@ public class Response {
 
     BUSINESS_EXCEPTION 业务异常
 ```
+
+<hr>
 
 License
 -------
