@@ -1,3 +1,7 @@
+## `0.3.0`
+- 升级 kotlin to 1.3.0
+- support library 迁移到 androidX
+
 ## `0.2.7`
 - 增加超时配置
 
