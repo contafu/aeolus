@@ -1,8 +1,6 @@
 package com.olympians.aeolus.sample;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 import com.olympians.aeolus.Aeolus;
@@ -11,6 +9,9 @@ import com.olympians.aeolus.exception.AeolusException;
 
 import org.jetbrains.annotations.NotNull;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Request request = new Request();
+        Request request = new Request("google", "70");
 
         findViewById(R.id.button).setOnClickListener(v -> {
             new Aeolus.Builder<Response>()
