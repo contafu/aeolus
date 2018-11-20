@@ -184,7 +184,7 @@ object Aeolus {
                             val type = types?.get(0)
                             if (type is ParameterizedType) {
                                 val argsTypes = type.actualTypeArguments
-                                val argsType = argsTypes?.get(0)
+                                val argsType = argsTypes.get(0)
                                 try {
                                     val obj = JSON.parseObject<T?>(bodyString, argsType)
                                     callback?.onSuccess(obj)
