@@ -1,6 +1,7 @@
 package com.olympians.aeolus.utils
 
 import android.text.TextUtils
+import com.olympians.aeolus.ContentType_JSON
 import com.olympians.aeolus.config.AeolusConfig
 import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_API
 import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_BODY
@@ -93,7 +94,7 @@ internal object AeolusTools {
         return if (contentType is String && "" != contentType) {
             RequestBody.create(MediaType.parse(contentType), body)
         } else {
-            RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), body)
+            RequestBody.create(MediaType.parse(ContentType_JSON), body)
         }
     }
 
