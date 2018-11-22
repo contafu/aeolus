@@ -45,7 +45,7 @@ router.post('/upload', (req, res, next) => {
         let src = fs.createReadStream(tmp_path);
         let dest = fs.createWriteStream(target_path);
         src.pipe(dest);
-        src.on('end', (data) => {
+        src.on('end', () => {
             res.json({
                 code: 0,
                 msg: '上传成功'
