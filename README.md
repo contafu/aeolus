@@ -1,6 +1,6 @@
 # Aeolus
 
-[![](https://jitpack.io/v/kontafu/aeolus.svg)](https://jitpack.io/#kontafu/aeolus)
+[![](https://jitpack.io/v/contafu/aeolus.svg)](https://jitpack.io/#kontafu/aeolus)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ## 下载
@@ -12,7 +12,7 @@ repositories {
 ```
 
 ``` groovy
-implementation 'com.github.kontafu:aeolus:latest-integer'
+implementation 'com.github.contafu:aeolus:latest-integer'
 ```
 
 ## 使用
@@ -57,7 +57,7 @@ public class Request implements AeolusRequest {
 - host 为可选参数。若不设置，则取全局配置；若设置则该Request优先使用本处配置；host是否以`/`结尾都可。
 - api 是否以`/`开头或结尾都可
 
-<em>如果Request继承于父类，则父类用 `@Query` 注解修饰，否则父类变量不会被检索添加`</em>
+<em>如果Request继承于父类，则父类用 `@Query` 注解修饰，否则父类变量不会被检索添加</em>
 
 <hr>
 
@@ -111,6 +111,8 @@ public class Response {
     AEOLUS_CODE_INTERNAL_ERROR 内部异常
 
     AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR 域名解析异常
+
+    AEOLUS_CODE_IO_ERROR 流操作异常
 
     BUSINESS_EXCEPTION 业务异常
 ```
