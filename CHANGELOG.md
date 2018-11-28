@@ -1,3 +1,6 @@
+## `0.3.1`
+- 处理读流时中断异常
+
 ## `0.3.0`
 - 升级 kotlin to 1.3.0
 - support library 迁移到 androidX

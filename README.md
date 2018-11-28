@@ -112,6 +112,8 @@ public class Response {
 
     AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR 域名解析异常
 
+    AEOLUS_CODE_IO_ERROR 流操作异常
+
     BUSINESS_EXCEPTION 业务异常
 ```
 

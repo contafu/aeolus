@@ -16,6 +16,7 @@ import com.olympians.aeolus.utils.AeolusTools
 import com.olympians.aeolus.utils.AnnotationTools
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -52,10 +53,15 @@ object Aeolus {
      * 域名解析异常
      */
     const val AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR = 0x06
+    /**
+     * 流操作异常
+     */
+    const val AEOLUS_CODE_IO_ERROR = 0x07
 
     private const val SocketTimeoutException_Code = -1
     private const val ConnectException = -2
     private const val UnknownHostException = -3
+    private const val IOException = -4
     private const val Failure = 0
     private const val Success = 1
 
@@ -161,6 +167,13 @@ object Aeolus {
                             putString(RESPONSE_BODY, e.localizedMessage)
                         }
                     })
+                } catch (e: IOException) {
+                    sendMessage(Message().apply {
+                        what = IOException
+                        data = Bundle().apply {
+                            putString(RESPONSE_BODY, e.localizedMessage)
+                        }
+                    })
                 } finally {
                     try {
                         response?.close()
@@ -220,6 +233,12 @@ object Aeolus {
                     with(msg.data) {
                         val errMsg = getString(RESPONSE_BODY)
                         callback?.onFailure(AeolusException(code = AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR, message = errMsg))
+                    }
+                }
+                IOException -> {
+                    with(msg.data) {
+                        val errMsg = getString(RESPONSE_BODY)
+                        callback?.onFailure(AeolusException(code = AEOLUS_CODE_IO_ERROR, message = errMsg))
                     }
                 }
             }
