@@ -1,6 +1,7 @@
 package com.olympians.aeolus.utils
 
 import android.text.TextUtils
+import com.olympians.aeolus.ContentType_JSON
 import com.olympians.aeolus.config.AeolusConfig
 import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_API
 import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_BODY
@@ -56,15 +57,14 @@ internal object AeolusTools {
             append("?")
         }
 
-        map.filter {
-            it.key.let { MAP_KEY_HOST != it && MAP_KEY_API != it && MAP_KEY_METHOD != it }
+        val paramsArr = mutableListOf<String>()
+        map.filter { entry ->
+            entry.key.let { MAP_KEY_HOST != it && MAP_KEY_API != it && MAP_KEY_METHOD != it }
         }.forEach {
-            sb.append(it.key)
-            sb.append("=")
-            sb.append(it.value)
-            sb.append("&")
+            paramsArr.add("${it.key}=${it.value}")
         }
-        return sb.toString().trimEnd('?').trimEnd('&')
+
+        return sb.append(paramsArr.joinToString("&")).toString()
     }
 
     private fun buildPostUrl(map: MutableMap<String, Any>): String {
@@ -91,12 +91,11 @@ internal object AeolusTools {
     private fun buildPostBody(map: MutableMap<String, Any>): RequestBody {
         val contentType = map[MAP_KEY_TYPE]
         val body = map[MAP_KEY_BODY] as String
-        val requestBody = if (contentType is String && "" != contentType) {
+        return if (contentType is String && "" != contentType) {
             RequestBody.create(MediaType.parse(contentType), body)
         } else {
-            RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), body)
+            RequestBody.create(MediaType.parse(ContentType_JSON), body)
         }
-        return requestBody
     }
 
     private fun filterBiasLineStart(res: String): String {

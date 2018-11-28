@@ -98,12 +98,9 @@ internal object AnnotationTools {
     }
 
     private fun recursion(classInstance: AeolusRequest, clazz: Class<in AeolusRequest>, map: MutableMap<String, Any>) {
-        clazz.declaredFields.filter {
-            it.name.let {
-                null != it && "\$change" != it
-                        && "serialVersionUID" != it
-                        && "shadow\$_klass" != it
-                        && "shadow\$_monitor" != it
+        clazz.declaredFields.filter { field ->
+            field.name.let {
+                "\$change" != it && "serialVersionUID" != it && "shadow\$_klass" != it && "shadow\$_monitor" != it
             }
         }.forEach {
             it.isAccessible = true
@@ -118,8 +115,9 @@ internal object AnnotationTools {
             }
         }
 
-        if ((null != clazz.superclass.getAnnotation(Query::class.java))) {
-            recursion(classInstance, clazz.superclass, map)
+        val superClass = clazz.superclass
+        if (null != superClass?.getAnnotation(Query::class.java)) {
+            recursion(classInstance, superClass, map)
         }
     }
 
