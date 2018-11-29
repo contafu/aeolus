@@ -46,15 +46,17 @@ router.post('/upload', (req, res, next) => {
         let dest = fs.createWriteStream(target_path);
         src.pipe(dest);
         src.on('end', () => {
-            res.json({
-                code: 0,
-                msg: '上传成功'
-            })
+            res.json({code: 0, msg: '上传成功'})
         });
         src.on('error', (err) => {
             next(err);
         });
     });
+});
+
+router.post('/test', (req, res, next) => {
+    console.log(JSON.stringify(req.body));
+    res.json({code: 0})
 });
 
 module.exports = router;

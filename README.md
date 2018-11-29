@@ -51,6 +51,10 @@ public class Request implements AeolusRequest {
 ```java
 @Post(host = "http://localhost:80", api = "/api/login", contentType = ContentType_JSON)
 public class Request implements AeolusRequest {
+
+    @Strip
+    private List<String> appList;
+
 }
 ```
 
@@ -58,6 +62,8 @@ public class Request implements AeolusRequest {
 - api 是否以`/`开头或结尾都可
 
 <em>如果Request继承于父类，则父类用 `@Query` 注解修饰，否则父类变量不会被检索添加</em>
+<em> `@Strip` 注解用于修饰 `Post` 中的变量，此时当该变量作为JSON方式传递给后端时，只序列化变量值，变量名不参加序列化；一般用作传递JsonArray作为顶层的JSON格式</em>
+
 
 <hr>
 
