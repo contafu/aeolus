@@ -6,6 +6,7 @@ import com.olympians.aeolus.AeolusRequest
 import com.olympians.aeolus.annotations.Get
 import com.olympians.aeolus.annotations.Post
 import com.olympians.aeolus.annotations.Query
+import com.olympians.aeolus.annotations.Strip
 import com.olympians.aeolus.config.AeolusConfig
 import java.net.URLEncoder
 
@@ -88,7 +89,16 @@ internal object AnnotationTools {
                 map[MAP_KEY_TYPE] = contentType
             }
 
-            val jsonString = JSON.toJSONString(request)
+            val tarField = clazz.declaredFields.find {
+                it.isAccessible = true
+                val stripAnno = it.getAnnotation(Strip::class.java)
+                null !== stripAnno
+            }
+            val jsonString = if (null === tarField) {
+                JSON.toJSONString(request)
+            } else {
+                JSON.toJSONString(tarField.get(request))
+            }
 
             map[MAP_KEY_BODY] = jsonString
 
