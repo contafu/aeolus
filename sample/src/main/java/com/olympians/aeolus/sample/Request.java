@@ -1,9 +1,9 @@
 package com.olympians.aeolus.sample;
 
 import com.olympians.aeolus.AeolusRequest;
-import com.olympians.aeolus.ContentTypeKt;
 import com.olympians.aeolus.annotations.Post;
 import com.olympians.aeolus.annotations.Strip;
+import com.olympians.aeolus.utils.ContentTypeKt;
 
 import java.util.List;
 

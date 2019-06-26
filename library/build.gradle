@@ -5,16 +5,16 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 group = 'com.github.contafu'
 
-def vName = "0.3.2"
+def vName = "0.4.0"
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.0'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 27
-        versionCode 20
+        targetSdkVersion 29
+        versionCode 21
         versionName vName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -65,8 +65,8 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    compileOnly 'com.squareup.okhttp3:okhttp:3.11.0'
-    compileOnly 'com.alibaba:fastjson:1.1.70.android'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    compileOnly 'com.squareup.okhttp3:okhttp:3.14.2'
+    compileOnly 'com.alibaba:fastjson:1.1.71.android'
 }
