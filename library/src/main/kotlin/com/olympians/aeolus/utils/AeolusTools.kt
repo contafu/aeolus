@@ -1,7 +1,7 @@
 package com.olympians.aeolus.utils
 
 import android.text.TextUtils
-import com.olympians.aeolus.ContentType_JSON
+import com.olympians.aeolus.AeolusRequest
 import com.olympians.aeolus.config.AeolusConfig
 import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_API
 import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_BODY
@@ -10,9 +10,9 @@ import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_METHOD
 import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_TYPE
 import com.olympians.aeolus.utils.AnnotationTools.MAP_VALUE_GET
 import com.olympians.aeolus.utils.AnnotationTools.MAP_VALUE_POST
-import okhttp3.MediaType
-import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.*
+import java.io.File
+import java.io.FileNotFoundException
 
 internal object AeolusTools {
 
@@ -23,8 +23,7 @@ internal object AeolusTools {
             }
         }
 
-        val method = map[MAP_KEY_METHOD]
-        return when (method) {
+        return when (map[MAP_KEY_METHOD]) {
             MAP_VALUE_GET -> {
                 request.url(buildGetUrl(map)).build()
             }
@@ -89,12 +88,52 @@ internal object AeolusTools {
     }
 
     private fun buildPostBody(map: MutableMap<String, Any>): RequestBody {
-        val contentType = map[MAP_KEY_TYPE]
-        val body = map[MAP_KEY_BODY] as String
-        return if (contentType is String && "" != contentType) {
-            RequestBody.create(MediaType.parse(contentType), body)
-        } else {
-            RequestBody.create(MediaType.parse(ContentType_JSON), body)
+        when (val contentType = map[MAP_KEY_TYPE]) {
+            ContentType_JSON -> {
+                val body = map[MAP_KEY_BODY] as String
+                return RequestBody.create(MediaType.parse(contentType as String), body)
+            }
+            ContentType_Multipart -> {
+                val body = map[MAP_KEY_BODY]
+                if (body is AeolusRequest) {
+                    val multipartBodyBuilder = MultipartBody.Builder()
+
+                    body.javaClass.declaredFields.forEach {
+                        it.isAccessible = true
+                        val name = it.name
+                        val value = it.get(body)
+                        if (it.genericType.toString() == "class java.io.File") {
+                            if (value is File) {
+                                if (value.exists()) {
+                                    multipartBodyBuilder.addFormDataPart(name, value.name, RequestBody.create(MediaType.parse(getContentType(value.extension)), value))
+                                } else {
+                                    throw FileNotFoundException("File could not found")
+                                }
+                            }
+                        } else if (it.genericType.toString() == "class java.lang.String") {
+                            if (value is String) {
+                                multipartBodyBuilder.addFormDataPart(name, value)
+                            }
+                        } else {
+                            multipartBodyBuilder.addFormDataPart(name, value.toString())
+                        }
+                    }
+                    return multipartBodyBuilder
+                            .setType(MediaType.get(ContentType_Multipart))
+                            .build()
+                } else {
+                    throw ClassCastException("xxx could not cast to AeolusRequest")
+                }
+            }
+            else -> {
+                val body = map[MAP_KEY_BODY]
+                if (body is AeolusRequest) {
+                    return FormBody.Builder()
+                            .build()
+                } else {
+                    throw ClassCastException("xxx could not cast to AeolusRequest")
+                }
+            }
         }
     }
 

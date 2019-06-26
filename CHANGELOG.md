@@ -1,3 +1,14 @@
+## `0.4.0`
+- 增加 `multipart/form-data` 格式上传文件
+- 升级 kotlin to 1.3.40
+- 升级 gradle to 5.1.1
+- 升级 android gradle plugin to 3.4.1
+- 升级 fastjson to 1.1.71.android
+- 升级 buildToolsVersion to 29.0.0
+- 升级 compileSdkVersion to 29
+- 升级 targetSdkVersion to 29
+- 升级 okhttp to 3.14.2
+
 ## `0.3.2`
 - 增加 `@Strip` 注解用于剥除变量名，只传递变量值作为 json
 

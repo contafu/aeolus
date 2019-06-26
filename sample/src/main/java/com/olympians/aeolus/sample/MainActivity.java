@@ -1,7 +1,11 @@
 package com.olympians.aeolus.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.olympians.aeolus.Aeolus;
 import com.olympians.aeolus.callback.OnAeolusCallback;
@@ -11,9 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,5 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .build();
         });
+
+        findViewById(R.id.next).setOnClickListener(v -> startActivity(new Intent(this, UploadFileActivity.class)));
     }
 }

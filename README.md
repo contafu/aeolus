@@ -5,29 +5,29 @@
 
 ## 下载
 
-```groovy
-repositories {
-    maven { url 'https://jitpack.io' }
-}
-```
+    ```groovy
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+    ```
 
-``` groovy
-implementation 'com.github.contafu:aeolus:latest-integer'
-```
+    ``` groovy
+    implementation 'com.github.contafu:aeolus:latest-integer'
+    ```
 
 ## 使用
 
 ### 1、Application中初始化配置
-```java
-    AeolusConfig.INSTANCE
-                .setHost(String host)
-                .addHeader(String key, String value)
-                .addHeaders(Map<String, String> headers)
-                .addFilter(AeolusFilter aeolusFilter)
-                .setHttpClient(OkHttpClient okHttpClient)
-                .setHostnameVerifier(HostnameVerifier hostnameVerifier)
-                .setTimeout(long timeout, TimeUnit unit)
-```
+    ```java
+        AeolusConfig.INSTANCE
+                    .setHost(String host)
+                    .addHeader(String key, String value)
+                    .addHeaders(Map<String, String> headers)
+                    .addFilter(AeolusFilter aeolusFilter)
+                    .setHttpClient(OkHttpClient okHttpClient)
+                    .setHostnameVerifier(HostnameVerifier hostnameVerifier)
+                    .setTimeout(long timeout, TimeUnit unit)
+    ```
 
 - `setHost(String host)` 配置全局host
 - `addHeader(String key, String value)` 添加单个Header
@@ -42,21 +42,21 @@ implementation 'com.github.contafu:aeolus:latest-integer'
 <hr>
 
 ### 2、创建Request类并实现AeolusRequest接口
-```java
-@Get(host = "http://localhost:80", api = "/api/login")
-public class Request implements AeolusRequest {
-}
-```
+    ```java
+    @Get(host = "http://localhost:80", api = "/api/login")
+    public class Request implements AeolusRequest {
+    }
+    ```
 
-```java
-@Post(host = "http://localhost:80", api = "/api/login", contentType = ContentType_JSON)
-public class Request implements AeolusRequest {
-
-    @Strip
-    private List<String> appList;
-
-}
-```
+    ```java
+    @Post(host = "http://localhost:80", api = "/api/login", contentType = ContentType_JSON)
+    public class Request implements AeolusRequest {
+    
+        @Strip
+        private List<String> appList;
+    
+    }
+    ```
 
 - host 为可选参数。若不设置，则取全局配置；若设置则该Request优先使用本处配置；host是否以`/`结尾都可。
 - api 是否以`/`开头或结尾都可
@@ -76,28 +76,28 @@ public class Response {
 <hr>
 
 ### 4、调用请求
-```java
-    new Aeolus.Builder<Response>()
-              .addRequest(new Request())
-              .addOnStart(() -> {
-
-              })
-              .addCallback(new OnAeolusCallback<Response>() {
-                  @Override
-                  public void onFailure(@NotNull AeolusException exception) {
-
-                  }
-
-                  @Override
-                  public void onSuccess(Response response) {
-
-                  }
-              })
-              .addOnEnd(() -> {
-
-              })
-              .build();
-```
+    ```java
+        new Aeolus.Builder<Response>()
+                  .addRequest(new Request())
+                  .addOnStart(() -> {
+    
+                  })
+                  .addCallback(new OnAeolusCallback<Response>() {
+                      @Override
+                      public void onFailure(@NotNull AeolusException exception) {
+    
+                      }
+    
+                      @Override
+                      public void onSuccess(Response response) {
+    
+                      }
+                  })
+                  .addOnEnd(() -> {
+    
+                  })
+                  .build();
+    ```
 
 - `addOnStart()` 当请求开始时回调
 - `addOnEnd()` 当请求结束时回调，无论请求成功与否

@@ -48,7 +48,7 @@ internal object AnnotationTools {
             val getApi = getAnno.api.trim()
 
             if ("" == getHost) {
-                if (null != host && !host.isEmpty()) {
+                if (null != host && host.isNotEmpty()) {
                     map[MAP_KEY_HOST] = host
                 } else {
                     throw IllegalArgumentException("You should add one host")
@@ -72,7 +72,7 @@ internal object AnnotationTools {
             val contentType = postAnno.contentType
 
             if ("" == postHost) {
-                if (null != host && !host.isEmpty()) {
+                if (null != host && host.isNotEmpty()) {
                     map[MAP_KEY_HOST] = host
                 } else {
                     throw IllegalArgumentException("You should add one host")
@@ -87,20 +87,27 @@ internal object AnnotationTools {
 
             if ("" != contentType) {
                 map[MAP_KEY_TYPE] = contentType
-            }
-
-            val tarField = clazz.declaredFields.find {
-                it.isAccessible = true
-                val stripAnno = it.getAnnotation(Strip::class.java)
-                null !== stripAnno
-            }
-            val jsonString = if (null === tarField) {
-                JSON.toJSONString(request)
             } else {
-                JSON.toJSONString(tarField.get(request))
+                map[MAP_KEY_TYPE] = ContentType_JSON
             }
 
-            map[MAP_KEY_BODY] = jsonString
+            when (contentType) {
+                ContentType_JSON -> {
+                    val tarField = clazz.declaredFields.find {
+                        it.isAccessible = true
+                        val stripAnno = it.getAnnotation(Strip::class.java)
+                        null !== stripAnno
+                    }
+                    map[MAP_KEY_BODY] = if (null === tarField) {
+                        JSON.toJSONString(request)
+                    } else {
+                        JSON.toJSONString(tarField.get(request))
+                    }
+                }
+                ContentType_Multipart -> {
+                    map[MAP_KEY_BODY] = request
+                }
+            }
 
             map[MAP_KEY_METHOD] = MAP_VALUE_POST
         }
