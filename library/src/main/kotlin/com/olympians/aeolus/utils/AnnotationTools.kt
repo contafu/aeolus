@@ -92,7 +92,10 @@ internal object AnnotationTools {
             }
 
             when (contentType) {
-                ContentType_JSON -> {
+                ContentType_Multipart -> {
+                    map[MAP_KEY_BODY] = request
+                }
+                else -> {
                     val tarField = clazz.declaredFields.find {
                         it.isAccessible = true
                         val stripAnno = it.getAnnotation(Strip::class.java)
@@ -103,9 +106,6 @@ internal object AnnotationTools {
                     } else {
                         JSON.toJSONString(tarField.get(request))
                     }
-                }
-                ContentType_Multipart -> {
-                    map[MAP_KEY_BODY] = request
                 }
             }
 
