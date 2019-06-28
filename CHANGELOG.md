@@ -1,3 +1,6 @@
+## `0.4.1`
+- 修复未添加 ContentType 请求时导致的崩溃
+
 ## `0.4.0`
 - 增加 `multipart/form-data` 格式上传文件
 - 升级 kotlin to 1.3.40
