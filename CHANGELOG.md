@@ -1,3 +1,8 @@
+## `0.4.2`
+- 使用基于cpu核心数的线程池重用资源
+- 升级 kotlin to 1.3.41
+- 升级 android gradle plugin to 3.4.2
+
 ## `0.4.1`
 - 修复未添加 ContentType 请求时导致的崩溃
 

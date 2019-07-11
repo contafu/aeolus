@@ -25,7 +25,6 @@
                     .addHeaders(Map<String, String> headers)
                     .addFilter(AeolusFilter aeolusFilter)
                     .setHttpClient(OkHttpClient okHttpClient)
-                    .setHostnameVerifier(HostnameVerifier hostnameVerifier)
                     .setTimeout(long timeout, TimeUnit unit)
     ```
 
@@ -33,11 +32,10 @@
 - `addHeader(String key, String value)` 添加单个Header
 - `addHeaders(Map<String, String> headers)` 添加多个Header
 - `setHttpClient(OkHttpClient okHttpClient)` 配置本地已存在的client实例
-- `setHostnameVerifier(HostnameVerifier hostnameVerifier)` 配置https证书认证
 - `setTimeout(long timeout, TimeUnit unit)` 配置超时
 - `addFilter(AeolusFilter aeolusFilter)` 配置请求过滤器
 
-<em>当配置 setHttpClient 后 setHostnameVerifier 和 setTimeout 不生效</em>
+<em>当配置 setHttpClient 后 setTimeout 不生效</em>
 
 <hr>
 
@@ -60,10 +58,10 @@
 
 - host 为可选参数。若不设置，则取全局配置；若设置则该Request优先使用本处配置；host是否以`/`结尾都可。
 - api 是否以`/`开头或结尾都可
+- contentType 默认为 application/json
 
 <em>如果Request继承于父类，则父类用 `@Query` 注解修饰，否则父类变量不会被检索添加</em>
 <em> `@Strip` 注解用于修饰 `Post` 中的变量，此时当该变量作为JSON方式传递给后端时，只序列化变量值，变量名不参加序列化；一般用作传递JsonArray作为顶层的JSON格式</em>
-
 
 <hr>
 
@@ -100,7 +98,7 @@ public class Response {
     ```
 
 - `addOnStart()` 当请求开始时回调
-- `addOnEnd()` 当请求结束时回调，无论请求成功与否
+- `addOnEnd()` 当请求结束时回调
 
 <hr>
 

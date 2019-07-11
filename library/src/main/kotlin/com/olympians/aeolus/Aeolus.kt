@@ -21,6 +21,7 @@ import java.lang.reflect.ParameterizedType
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 object Aeolus {
@@ -75,12 +76,37 @@ object Aeolus {
                 it.connectTimeout(time, unit)
             }
 
-            val hostnameVerifier = AeolusConfig.getHostnameVerifier()
-            if (null != hostnameVerifier) {
-                it.hostnameVerifier(hostnameVerifier)
-            }
+//            val hostnameVerifier = AeolusConfig.getHostnameVerifier()
+//            if (null != hostnameVerifier) {
+//                it.sslSocketFactory(sslSocketFactory(), trustManager)
+//                it.hostnameVerifier(hostnameVerifier)
+//            }
+
         }.build()
     }
+
+//    private fun sslSocketFactory(): SSLSocketFactory {
+//        val sslContext = SSLContext.getInstance("TLS")
+//        sslContext.init(null, null, SecureRandom())
+//        return sslContext.socketFactory
+//    }
+//
+//    private val trustManager = object : X509TrustManager {
+//
+//        override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) {
+//
+//        }
+//
+//        override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) {
+//        }
+//
+//        override fun getAcceptedIssuers(): Array<X509Certificate> {
+//            return arrayOf()
+//        }
+//
+//    }
+
+    private val threadPool by lazy { Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1) }
 
     class Builder<T> : Handler() {
         private var request: AeolusRequest? = null
@@ -112,7 +138,7 @@ object Aeolus {
 
         fun build() {
             start?.onStart()
-            Thread(Runnable {
+            threadPool.execute {
                 val request = AeolusTools.buildRequest(AnnotationTools.extractParams(request))
 
                 var response: Response? = null
@@ -181,12 +207,12 @@ object Aeolus {
                         e.printStackTrace()
                     }
                 }
-            }).start()
+            }
         }
 
-        override fun handleMessage(msg: Message?) {
+        override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            when (msg?.what) {
+            when (msg.what) {
                 Success -> {
                     with(msg.data) {
                         val code = getInt(RESPONSE_CODE)
@@ -197,9 +223,9 @@ object Aeolus {
                             val type = types?.get(0)
                             if (type is ParameterizedType) {
                                 val argsTypes = type.actualTypeArguments
-                                val argsType = argsTypes.get(0)
+                                val argsType = argsTypes[0]
                                 try {
-                                    val obj = JSON.parseObject<T?>(bodyString, argsType)
+                                    val obj = JSON.parseObject<T>(bodyString, argsType)
                                     callback?.onSuccess(obj)
                                 } catch (e: Exception) {
                                     callback?.onFailure(AeolusException(code = AEOLUS_CODE_JSON_ERROR, message = e.localizedMessage))
