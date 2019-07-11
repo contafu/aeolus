@@ -1,5 +1,6 @@
 package com.olympians.aeolus.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -41,5 +42,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
+
+        findViewById(R.id.coroutine).setOnClickListener(v -> startActivity(new Intent(this, CoroutineTestActivity.class)));
+        findViewById(R.id.thread_pool).setOnClickListener(v -> startActivity(new Intent(this, ThreadPoolActivity.class)));
     }
 }

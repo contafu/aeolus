@@ -23,6 +23,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".CoroutineTestActivity" />
+        <activity android:name=".ThreadPoolActivity" />
     </application>
 
 </manifest>
