@@ -68,5 +68,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.next).setOnClickListener(v -> startActivity(new Intent(this, UploadFileActivity.class)));
+        findViewById(R.id.coroutine).setOnClickListener(v -> startActivity(new Intent(this, CoroutineTestActivity.class)));
+        findViewById(R.id.thread_pool).setOnClickListener(v -> startActivity(new Intent(this, ThreadPoolActivity.class)));
     }
 }

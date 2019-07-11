@@ -10,7 +10,8 @@
         android:id="@id/button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="request"
+        android:text="Request"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@id/next"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -22,10 +23,33 @@
         android:id="@+id/next"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="next"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="UploadFile"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@id/coroutine"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button" />
+
+    <Button
+        android:id="@+id/coroutine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Coroutine"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@id/thread_pool"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/next" />
+
+    <Button
+        android:id="@+id/thread_pool"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="ThreadPool"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coroutine" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
