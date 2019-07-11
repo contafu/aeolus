@@ -7,7 +7,8 @@ import com.olympians.aeolus.config.AeolusConfig;
 
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.OkHttpClient;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 public class AppDelegate extends Application {
 
@@ -20,9 +21,7 @@ public class AppDelegate extends Application {
                     Log.d("TAG", body);
                     return body;
                 })
-                .setTimeout(45L, TimeUnit.SECONDS)
-                .setHttpClient(new OkHttpClient.Builder().build())
-                .addHeader("Cookie", "JSESSIONID=B7A9689A7AE46A02FC0A600A644A3CE4");
+                .setTimeout(30L, TimeUnit.SECONDS);
     }
 }
 

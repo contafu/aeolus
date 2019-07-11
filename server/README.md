@@ -5,7 +5,7 @@
 ### 1、
 ```shell
     npm install
-    npm index.js
+    npm app.js
 ```
 <hr>
 

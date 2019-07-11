@@ -2,15 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "description": "server for test",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tomas",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4",
-    "multer": "^1.4.1"
-  }
+  "license": "ISC"
 }

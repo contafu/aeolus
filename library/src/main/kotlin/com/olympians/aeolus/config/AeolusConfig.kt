@@ -11,7 +11,7 @@ object AeolusConfig {
 
     private val headerMap: MutableMap<String, String> = mutableMapOf()
 
-    private var hostnameVerifier: HostnameVerifier? = null
+//    private var hostnameVerifier: HostnameVerifier? = null
 
     private var httpClient: OkHttpClient? = null
 
@@ -27,7 +27,7 @@ object AeolusConfig {
 
     internal fun getHeaders(): MutableMap<String, String> = this.headerMap
 
-    internal fun getHostnameVerifier(): HostnameVerifier? = this.hostnameVerifier
+//    internal fun getHostnameVerifier(): HostnameVerifier? = this.hostnameVerifier
 
     internal fun getHttpClient(): OkHttpClient? = this.httpClient
 
@@ -48,16 +48,16 @@ object AeolusConfig {
     }
 
     fun addHeaders(headers: MutableMap<String, String> = mutableMapOf()): AeolusConfig {
-        if (!headers.isEmpty()) {
+        if (headers.isNotEmpty()) {
             this.headerMap.putAll(headers)
         }
         return this
     }
 
-    fun setHostnameVerifier(hostnameVerifier: HostnameVerifier): AeolusConfig {
-        this.hostnameVerifier = hostnameVerifier
-        return this
-    }
+//    fun setHostnameVerifier(hostnameVerifier: HostnameVerifier): AeolusConfig {
+//        this.hostnameVerifier = hostnameVerifier
+//        return this
+//    }
 
     fun setHttpClient(httpClient: OkHttpClient): AeolusConfig {
         this.httpClient = httpClient
