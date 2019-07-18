@@ -1,3 +1,6 @@
+## `0.4.3`
+- 修复 ContentType 为 multipart/form-data 时，会崩溃的 Bug
+
 ## `0.4.2`
 - 使用基于cpu核心数的线程池重用资源
 - 升级 kotlin to 1.3.41

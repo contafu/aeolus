@@ -102,20 +102,22 @@ internal object AeolusTools {
                         it.isAccessible = true
                         val name = it.name
                         val value = it.get(body)
-                        if (it.genericType.toString() == "class java.io.File") {
-                            if (value is File) {
-                                if (value.exists()) {
-                                    multipartBodyBuilder.addFormDataPart(name, value.name, RequestBody.create(MediaType.parse(getContentType(value.extension)), value))
-                                } else {
-                                    throw FileNotFoundException("File could not found")
+                        if (null != value) {
+                            if (it.genericType.toString() == "class java.io.File") {
+                                if (value is File) {
+                                    if (value.exists()) {
+                                        multipartBodyBuilder.addFormDataPart(name, value.name, RequestBody.create(MediaType.parse(getContentType(value.extension)), value))
+                                    } else {
+                                        throw FileNotFoundException("File could not found")
+                                    }
                                 }
+                            } else if (it.genericType.toString() == "class java.lang.String") {
+                                if (value is String) {
+                                    multipartBodyBuilder.addFormDataPart(name, value)
+                                }
+                            } else {
+                                multipartBodyBuilder.addFormDataPart(name, value.toString())
                             }
-                        } else if (it.genericType.toString() == "class java.lang.String") {
-                            if (value is String) {
-                                multipartBodyBuilder.addFormDataPart(name, value)
-                            }
-                        } else {
-                            multipartBodyBuilder.addFormDataPart(name, value.toString())
                         }
                     }
                     return multipartBodyBuilder
