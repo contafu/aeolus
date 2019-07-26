@@ -21,7 +21,7 @@ class ThreadPoolActivity : AppCompatActivity() {
             threadPool.execute {
                 OkHttpClient.Builder().build().apply {
                     newCall(Request.Builder().url("http://192.168.31.150:3000/request1").build()).execute().apply {
-                        val string = body()?.string()
+                        val string = body?.string()
                         Log.d("TAG", string)
                     }
                 }

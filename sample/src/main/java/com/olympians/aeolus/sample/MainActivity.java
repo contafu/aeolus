@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.request).setOnClickListener(v -> {
+        findViewById(R.id.coroutine).setOnClickListener(v -> {
             for (int i = 0; i < 50; i++) {
                 request(String.valueOf(i));
             }

@@ -37,7 +37,7 @@ class CoroutineTestActivity : AppCompatActivity(), CoroutineScope by MainScope()
         val client = OkHttpClient.Builder().build()
         val response = client.newCall(okhttp3.Request.Builder().url("http://192.168.31.150:3000/request1").build()).execute()
 
-        val string = response.body()?.string()
+        val string = response.body?.string()
 
         return string ?: ""
     }
@@ -46,7 +46,7 @@ class CoroutineTestActivity : AppCompatActivity(), CoroutineScope by MainScope()
         val client = OkHttpClient.Builder().build()
         val response = client.newCall(okhttp3.Request.Builder().url("http://192.168.31.150:3000/request2").build()).execute()
 
-        val string = response.body()?.string()
+        val string = response.body?.string()
 
         return string ?: ""
     }
