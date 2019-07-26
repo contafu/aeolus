@@ -66,35 +66,35 @@
 <hr>
 
 ### 3、创建Response类
-```java
-public class Response {
-}
-```
+    ```java
+    public class Response {
+    }
+    ```
 
 <hr>
 
 ### 4、调用请求
     ```java
-        new Aeolus.Builder<Response>()
-                  .addRequest(new Request())
-                  .addOnStart(() -> {
-    
-                  })
-                  .addCallback(new OnAeolusCallback<Response>() {
-                      @Override
-                      public void onFailure(@NotNull AeolusException exception) {
-    
-                      }
-    
-                      @Override
-                      public void onSuccess(Response response) {
-    
-                      }
-                  })
-                  .addOnEnd(() -> {
-    
-                  })
-                  .build();
+    new Aeolus.Builder<Response>()
+          .addRequest(new Request())
+          .addOnStart(() -> {
+
+          })
+          .addCallback(new OnAeolusCallback<Response>() {
+              @Override
+              public void onFailure(@NotNull AeolusException exception) {
+
+              }
+
+              @Override
+              public void onSuccess(Response response) {
+
+              }
+          })
+          .addOnEnd(() -> {
+
+          })
+          .build();
     ```
 
 - `addOnStart()` 当请求开始时回调
@@ -103,23 +103,23 @@ public class Response {
 <hr>
 
 ### 5、异常码
-```text
-    AEOLUS_CODE_OK 请求成功
+    ```text
+        AEOLUS_CODE_OK 请求成功
 
-    AEOLUS_CODE_JSON_ERROR 解析json异常
+        AEOLUS_CODE_JSON_ERROR 解析json异常
 
-    AEOLUS_CODE_SOCKET_ERROR 请求超时
+        AEOLUS_CODE_SOCKET_ERROR 请求超时
 
-    AEOLUS_CODE_CONNECT_ERROR 连接超时
+        AEOLUS_CODE_CONNECT_ERROR 连接超时
 
-    AEOLUS_CODE_INTERNAL_ERROR 内部异常
+        AEOLUS_CODE_INTERNAL_ERROR 内部异常
 
-    AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR 域名解析异常
+        AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR 域名解析异常
 
-    AEOLUS_CODE_IO_ERROR 流操作异常
+        AEOLUS_CODE_IO_ERROR 流操作异常
 
-    BUSINESS_EXCEPTION 业务异常
-```
+        BUSINESS_EXCEPTION 业务异常
+    ```
 
 <hr>
 

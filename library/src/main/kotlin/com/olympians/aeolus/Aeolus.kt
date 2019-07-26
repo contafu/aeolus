@@ -75,13 +75,11 @@ object Aeolus {
                 it.writeTimeout(time, unit)
                 it.connectTimeout(time, unit)
             }
-
 //            val hostnameVerifier = AeolusConfig.getHostnameVerifier()
 //            if (null != hostnameVerifier) {
 //                it.sslSocketFactory(sslSocketFactory(), trustManager)
 //                it.hostnameVerifier(hostnameVerifier)
 //            }
-
         }.build()
     }
 
@@ -250,7 +248,7 @@ object Aeolus {
                             val type = types?.get(0)
                             if (type is ParameterizedType) {
                                 val argsTypes = type.actualTypeArguments
-                                val argsType = argsTypes[0]
+                                val argsType = if (null != callback) argsTypes[0] else argsTypes[1]
                                 try {
                                     val obj = JSON.parseObject<T>(bodyString, argsType)
                                     callback?.onSuccess(obj)
