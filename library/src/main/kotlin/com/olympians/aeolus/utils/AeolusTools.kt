@@ -10,7 +10,14 @@ import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_METHOD
 import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_TYPE
 import com.olympians.aeolus.utils.AnnotationTools.MAP_VALUE_GET
 import com.olympians.aeolus.utils.AnnotationTools.MAP_VALUE_POST
-import okhttp3.*
+import okhttp3.FormBody
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -91,7 +98,8 @@ internal object AeolusTools {
         when (val contentType = map[MAP_KEY_TYPE]) {
             ContentType_JSON -> {
                 val body = map[MAP_KEY_BODY] as String
-                return RequestBody.create(MediaType.parse(contentType as String), body)
+                val mediaType = (contentType as String).toMediaTypeOrNull()
+                return body.toRequestBody(mediaType)
             }
             ContentType_Multipart -> {
                 val body = map[MAP_KEY_BODY]
@@ -106,7 +114,8 @@ internal object AeolusTools {
                             if (it.genericType.toString() == "class java.io.File") {
                                 if (value is File) {
                                     if (value.exists()) {
-                                        multipartBodyBuilder.addFormDataPart(name, value.name, RequestBody.create(MediaType.parse(getContentType(value.extension)), value))
+                                        val mediaType = getContentType(value.extension).toMediaTypeOrNull()
+                                        multipartBodyBuilder.addFormDataPart(name, value.name, value.asRequestBody(mediaType))
                                     } else {
                                         throw FileNotFoundException("File could not found")
                                     }
@@ -121,7 +130,7 @@ internal object AeolusTools {
                         }
                     }
                     return multipartBodyBuilder
-                            .setType(MediaType.get(ContentType_Multipart))
+                            .setType(ContentType_Multipart.toMediaType())
                             .build()
                 } else {
                     throw ClassCastException("xxx could not cast to AeolusRequest")
@@ -130,8 +139,7 @@ internal object AeolusTools {
             else -> {
                 val body = map[MAP_KEY_BODY]
                 if (body is AeolusRequest) {
-                    return FormBody.Builder()
-                            .build()
+                    return FormBody.Builder().build()
                 } else {
                     throw ClassCastException("xxx could not cast to AeolusRequest")
                 }
