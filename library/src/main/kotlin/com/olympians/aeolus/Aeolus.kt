@@ -111,9 +111,11 @@ object Aeolus {
     class Builder<T> : Handler() {
         private var request: AeolusRequest? = null
         private var callback: OnAeolusCallback<T>? = null
-        private var block: ((String, String?) -> Unit)? = null
+        private var lCallback: ((AeolusException?, T?) -> Unit)? = null
         private var start: OnAeolusStart? = null
+        private var lStart: (() -> Unit)? = null
         private var end: OnAeolusEnd? = null
+        private var lEnd: (() -> Unit)? = null
 
         fun addRequest(request: AeolusRequest): Builder<T> {
             this.request = request
@@ -121,23 +123,48 @@ object Aeolus {
         }
 
         fun addCallback(callback: OnAeolusCallback<T>): Builder<T> {
+            this.lCallback = null
             this.callback = callback
-            this.block = null
+            return this
+        }
+
+        /* lambda support */
+        fun addCallback(callback: (AeolusException?, T?) -> Unit): Builder<T> {
+            this.callback = null
+            this.lCallback = callback
             return this
         }
 
         fun addOnStart(start: OnAeolusStart): Builder<T> {
+            this.lStart = null
             this.start = start
             return this
         }
 
+        /* lambda support */
+        fun addOnStart(start: () -> Unit): Builder<T> {
+            this.start = null
+            this.lStart = start
+            return this
+        }
+
         fun addOnEnd(end: OnAeolusEnd): Builder<T> {
+            this.lEnd = null
             this.end = end
+            return this
+        }
+
+        /* lambda support */
+        fun addOnEnd(end: () -> Unit): Builder<T> {
+            this.end = null
+            this.lEnd = end
             return this
         }
 
         fun build() {
             start?.onStart()
+            lStart?.invoke()
+
             threadPool.execute {
                 val request = AeolusTools.buildRequest(AnnotationTools.extractParams(request))
 
@@ -145,13 +172,13 @@ object Aeolus {
                 try {
                     response = client.newCall(request).execute()
 
-                    val httpCode = response.code()
+                    val httpCode = response.code
                     if (response.isSuccessful) {
-                        var bodyString: String? = response.body()?.string()
+                        var bodyString: String? = response.body?.string()
 
                         val filter = AeolusConfig.getFilter()
                         if (null != filter) {
-                            bodyString = filter.filter(request.url().url().path, bodyString)
+                            bodyString = filter.filter(request.url.toUrl().path, bodyString)
                         }
 
                         sendMessage(Message().apply {
@@ -162,8 +189,8 @@ object Aeolus {
                             }
                         })
                     } else {
-                        val bodyString: String? = response.body()?.string()
-                        val msg = response.message()
+                        val bodyString: String? = response.body?.string()
+                        val msg = response.message
                         sendMessage(Message().apply {
                             what = Failure
                             data = Bundle().apply {
@@ -219,7 +246,7 @@ object Aeolus {
                         val bodyString: String? = getString(RESPONSE_BODY)
 
                         if (200 == code && !TextUtils.isEmpty(bodyString)) {
-                            val types = callback?.javaClass?.genericInterfaces
+                            val types = if (null != callback) callback?.javaClass?.genericInterfaces else lCallback?.javaClass?.genericInterfaces
                             val type = types?.get(0)
                             if (type is ParameterizedType) {
                                 val argsTypes = type.actualTypeArguments
@@ -227,11 +254,14 @@ object Aeolus {
                                 try {
                                     val obj = JSON.parseObject<T>(bodyString, argsType)
                                     callback?.onSuccess(obj)
+                                    lCallback?.invoke(null, obj)
                                 } catch (e: Exception) {
                                     callback?.onFailure(AeolusException(code = AEOLUS_CODE_JSON_ERROR, message = e.localizedMessage))
+                                    lCallback?.invoke(AeolusException(code = AEOLUS_CODE_JSON_ERROR, message = e.localizedMessage), null)
                                 }
                             } else {
                                 callback?.onFailure(AeolusException(code = AEOLUS_CODE_INTERNAL_ERROR, message = "type is not ParameterizedType"))
+                                lCallback?.invoke(AeolusException(code = AEOLUS_CODE_INTERNAL_ERROR, message = "type is not ParameterizedType"), null)
                             }
                         }
                     }
@@ -241,34 +271,40 @@ object Aeolus {
                         val errCode = getInt(RESPONSE_CODE)
                         val errMsg = getString(RESPONSE_BODY)
                         callback?.onFailure(AeolusException(code = BUSINESS_EXCEPTION, businessCode = errCode, message = errMsg))
+                        lCallback?.invoke(AeolusException(code = BUSINESS_EXCEPTION, businessCode = errCode, message = errMsg), null)
                     }
                 }
                 SocketTimeoutException_Code -> {
                     with(msg.data) {
                         val errMsg = getString(RESPONSE_BODY)
                         callback?.onFailure(AeolusException(code = AEOLUS_CODE_SOCKET_ERROR, message = errMsg))
+                        lCallback?.invoke(AeolusException(code = AEOLUS_CODE_SOCKET_ERROR, message = errMsg), null)
                     }
                 }
                 ConnectException -> {
                     with(msg.data) {
                         val errMsg = getString(RESPONSE_BODY)
                         callback?.onFailure(AeolusException(code = AEOLUS_CODE_CONNECT_ERROR, message = errMsg))
+                        lCallback?.invoke(AeolusException(code = AEOLUS_CODE_CONNECT_ERROR, message = errMsg), null)
                     }
                 }
                 UnknownHostException -> {
                     with(msg.data) {
                         val errMsg = getString(RESPONSE_BODY)
                         callback?.onFailure(AeolusException(code = AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR, message = errMsg))
+                        lCallback?.invoke(AeolusException(code = AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR, message = errMsg), null)
                     }
                 }
                 IOException -> {
                     with(msg.data) {
                         val errMsg = getString(RESPONSE_BODY)
                         callback?.onFailure(AeolusException(code = AEOLUS_CODE_IO_ERROR, message = errMsg))
+                        lCallback?.invoke(AeolusException(code = AEOLUS_CODE_IO_ERROR, message = errMsg), null)
                     }
                 }
             }
             end?.onEnd()
+            lEnd?.invoke()
         }
     }
 }
