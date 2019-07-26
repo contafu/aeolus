@@ -5,28 +5,28 @@
 
 ## 下载
 
-    ```groovy
-    repositories {
-        maven { url 'https://jitpack.io' }
-    }
-    ```
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+```
 
-    ``` groovy
-    implementation 'com.github.contafu:aeolus:latest-integer'
-    ```
+``` groovy
+implementation 'com.github.contafu:aeolus:latest-integer'
+```
 
 ## 使用
 
 ### 1、Application中初始化配置
-    ```java
-        AeolusConfig.INSTANCE
-                    .setHost(String host)
-                    .addHeader(String key, String value)
-                    .addHeaders(Map<String, String> headers)
-                    .addFilter(AeolusFilter aeolusFilter)
-                    .setHttpClient(OkHttpClient okHttpClient)
-                    .setTimeout(long timeout, TimeUnit unit)
-    ```
+```java
+AeolusConfig.INSTANCE
+            .setHost(String host)
+            .addHeader(String key, String value)
+            .addHeaders(Map<String, String> headers)
+            .addFilter(AeolusFilter aeolusFilter)
+            .setHttpClient(OkHttpClient okHttpClient)
+            .setTimeout(long timeout, TimeUnit unit)
+```
 
 - `setHost(String host)` 配置全局host
 - `addHeader(String key, String value)` 添加单个Header
@@ -40,21 +40,21 @@
 <hr>
 
 ### 2、创建Request类并实现AeolusRequest接口
-    ```java
-    @Get(host = "http://localhost:80", api = "/api/login")
-    public class Request implements AeolusRequest {
-    }
-    ```
+```java
+@Get(host = "http://localhost:80", api = "/api/login")
+public class Request implements AeolusRequest {
+}
+```
 
-    ```java
-    @Post(host = "http://localhost:80", api = "/api/login", contentType = ContentType_JSON)
-    public class Request implements AeolusRequest {
-    
-        @Strip
-        private List<String> appList;
-    
-    }
-    ```
+```java
+@Post(host = "http://localhost:80", api = "/api/login", contentType = ContentType_JSON)
+public class Request implements AeolusRequest {
+
+    @Strip
+    private List<String> appList;
+
+}
+```
 
 - host 为可选参数。若不设置，则取全局配置；若设置则该Request优先使用本处配置；host是否以`/`结尾都可。
 - api 是否以`/`开头或结尾都可
@@ -66,36 +66,36 @@
 <hr>
 
 ### 3、创建Response类
-    ```java
-    public class Response {
-    }
-    ```
+```java
+public class Response {
+}
+```
 
 <hr>
 
 ### 4、调用请求
-    ```java
-    new Aeolus.Builder<Response>()
-          .addRequest(new Request())
-          .addOnStart(() -> {
+```java
+new Aeolus.Builder<Response>()
+      .addRequest(new Request())
+      .addOnStart(() -> {
 
-          })
-          .addCallback(new OnAeolusCallback<Response>() {
-              @Override
-              public void onFailure(@NotNull AeolusException exception) {
+      })
+      .addCallback(new OnAeolusCallback<Response>() {
+          @Override
+          public void onFailure(@NotNull AeolusException exception) {
 
-              }
+          }
 
-              @Override
-              public void onSuccess(Response response) {
+          @Override
+          public void onSuccess(Response response) {
 
-              }
-          })
-          .addOnEnd(() -> {
+          }
+      })
+      .addOnEnd(() -> {
 
-          })
-          .build();
-    ```
+      })
+      .build();
+```
 
 - `addOnStart()` 当请求开始时回调
 - `addOnEnd()` 当请求结束时回调
@@ -103,23 +103,23 @@
 <hr>
 
 ### 5、异常码
-    ```text
-        AEOLUS_CODE_OK 请求成功
+```text
+    AEOLUS_CODE_OK 请求成功
 
-        AEOLUS_CODE_JSON_ERROR 解析json异常
+    AEOLUS_CODE_JSON_ERROR 解析json异常
 
-        AEOLUS_CODE_SOCKET_ERROR 请求超时
+    AEOLUS_CODE_SOCKET_ERROR 请求超时
 
-        AEOLUS_CODE_CONNECT_ERROR 连接超时
+    AEOLUS_CODE_CONNECT_ERROR 连接超时
 
-        AEOLUS_CODE_INTERNAL_ERROR 内部异常
+    AEOLUS_CODE_INTERNAL_ERROR 内部异常
 
-        AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR 域名解析异常
+    AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR 域名解析异常
 
-        AEOLUS_CODE_IO_ERROR 流操作异常
+    AEOLUS_CODE_IO_ERROR 流操作异常
 
-        BUSINESS_EXCEPTION 业务异常
-    ```
+    BUSINESS_EXCEPTION 业务异常
+```
 
 <hr>
 
