@@ -1,3 +1,6 @@
+## `0.4.4`
+- 增加 lambda 支持
+
 ## `0.4.3`
 - 修复 ContentType 为 multipart/form-data 时，会崩溃的 Bug
 

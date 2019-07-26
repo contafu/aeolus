@@ -7,21 +7,11 @@ const certificate = fs.readFileSync(path.join(__dirname, './ca/ca.cer'), 'utf8')
 const credentials = {key: privateKey, cert: certificate};
 
 const server = app.createServer((req, res) => {
-    switch (req.url) {
-        case '/test':
-            setTimeout(() => {
-                res.statusCode = 200;
-                res.end(req.url);
-            }, 1000);
-            break;
-        case '/index':
-        default:
-            setTimeout(() => {
-                res.statusCode = 200;
-                res.end(req.url);
-            }, 1000);
-            break
-    }
+    const data = {
+        code: 200,
+        msg: 'success'
+    };
+    res.end(JSON.stringify(data))
 });
 
 server.listen('3000', () => {
