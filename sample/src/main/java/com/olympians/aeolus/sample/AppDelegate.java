@@ -7,9 +7,6 @@ import com.olympians.aeolus.config.AeolusConfig;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
-
 public class AppDelegate extends Application {
 
     @Override
