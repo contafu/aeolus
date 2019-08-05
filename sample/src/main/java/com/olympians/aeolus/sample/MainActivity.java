@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.olympians.aeolus.Aeolus;
+import com.contafu.Aeolus;
 import com.olympians.aeolus.callback.OnAeolusCallback;
 import com.olympians.aeolus.exception.AeolusException;
 
@@ -24,26 +24,12 @@ public class MainActivity extends AppCompatActivity {
                 request(String.valueOf(i));
             }
         });
-    }
-
-    private void request(String tag) {
-        new Aeolus.Builder<Response>()
-                .addRequest(new Request(tag))
-                .addCallback(new OnAeolusCallback<Response>() {
-
-                    @Override
-                    public void onFailure(@NotNull AeolusException exception) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(Response response) {
-
-                    }
-                })
-                .build();
 
         findViewById(R.id.coroutine).setOnClickListener(v -> startActivity(new Intent(this, CoroutineTestActivity.class)));
         findViewById(R.id.thread_pool).setOnClickListener(v -> startActivity(new Intent(this, ThreadPoolActivity.class)));
+    }
+
+    private void request(String tag) {
+
     }
 }
