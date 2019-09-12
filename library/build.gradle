@@ -9,7 +9,7 @@ def vName = "0.5.0"
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '29.0.1'
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         minSdkVersion 15
@@ -30,7 +30,6 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
-        main.java.srcDirs += 'src/main/kotlinx'
     }
 
     compileOptions {
@@ -49,13 +48,13 @@ android {
 
 task generateSourceJar(type: Jar) {
     group = 'jar'
-    archiveName = "aeolus-sources-${vName}.jar"
+    archiveFileName = "aeolus-sources-${vName}.jar"
     from android.sourceSets.main.java.srcDirs
 }
 
 task generateClassJar(type: Jar) {
     group = 'jar'
-    archiveName = "aeolus-classes-${vName}.jar"
+    archiveFileName = "aeolus-classes-${vName}.jar"
     from "$buildDir.absolutePath/tmp/kotlin-classes/release/"
 }
 
@@ -64,7 +63,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.2"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.squareup.okhttp3:okhttp:4.0.1'
     implementation 'com.alibaba:fastjson:1.1.71.android'
 
