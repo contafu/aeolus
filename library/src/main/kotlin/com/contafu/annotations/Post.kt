@@ -1,4 +1,4 @@
-package com.olympians.aeolus.annotations
+package com.contafu.annotations
 
 import java.lang.annotation.Inherited
 

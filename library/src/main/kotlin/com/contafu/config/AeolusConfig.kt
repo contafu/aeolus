@@ -1,9 +1,8 @@
-package com.olympians.aeolus.config
+package com.contafu.config
 
 import android.text.TextUtils
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.HostnameVerifier
 
 object AeolusConfig {
 

@@ -1,13 +1,13 @@
-package com.olympians.aeolus.utils
+package com.contafu.utils
 
 import android.text.TextUtils
 import com.alibaba.fastjson.JSON
-import com.olympians.aeolus.AeolusRequest
-import com.olympians.aeolus.annotations.Get
-import com.olympians.aeolus.annotations.Post
-import com.olympians.aeolus.annotations.Query
-import com.olympians.aeolus.annotations.Strip
-import com.olympians.aeolus.config.AeolusConfig
+import com.contafu.AeolusRequest
+import com.contafu.annotations.Get
+import com.contafu.annotations.Post
+import com.contafu.annotations.Query
+import com.contafu.annotations.Strip
+import com.contafu.config.AeolusConfig
 import java.net.URLEncoder
 
 internal object AnnotationTools {

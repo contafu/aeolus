@@ -1,4 +1,4 @@
-package com.olympians.aeolus.utils
+package com.contafu.utils
 
 import android.text.TextUtils
 import java.util.*

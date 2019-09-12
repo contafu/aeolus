@@ -1,4 +1,4 @@
-package com.olympians.aeolus.callback
+package com.contafu.callback
 
 interface OnAeolusStart {
     fun onStart()

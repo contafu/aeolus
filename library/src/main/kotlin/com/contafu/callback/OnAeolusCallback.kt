@@ -1,6 +1,6 @@
-package com.olympians.aeolus.callback
+package com.contafu.callback
 
-import com.olympians.aeolus.exception.AeolusException
+import com.contafu.exception.AeolusException
 
 interface OnAeolusCallback<T> {
 

@@ -1,4 +1,4 @@
-package com.olympians.aeolus.config
+package com.contafu.config
 
 interface AeolusFilter {
 

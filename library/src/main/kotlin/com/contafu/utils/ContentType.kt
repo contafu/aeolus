@@ -1,4 +1,4 @@
-package com.olympians.aeolus.utils
+package com.contafu.utils
 
 const val ContentType_JSON = "application/json; charset=UTF-8"
 

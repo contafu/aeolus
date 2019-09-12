@@ -3,7 +3,7 @@ package com.olympians.aeolus.sample;
 import android.app.Application;
 import android.util.Log;
 
-import com.olympians.aeolus.config.AeolusConfig;
+import com.contafu.config.AeolusConfig;
 
 import java.util.concurrent.TimeUnit;
 

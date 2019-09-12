@@ -1,15 +1,15 @@
-package com.olympians.aeolus.utils
+package com.contafu.utils
 
 import android.text.TextUtils
-import com.olympians.aeolus.AeolusRequest
-import com.olympians.aeolus.config.AeolusConfig
-import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_API
-import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_BODY
-import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_HOST
-import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_METHOD
-import com.olympians.aeolus.utils.AnnotationTools.MAP_KEY_TYPE
-import com.olympians.aeolus.utils.AnnotationTools.MAP_VALUE_GET
-import com.olympians.aeolus.utils.AnnotationTools.MAP_VALUE_POST
+import com.contafu.AeolusRequest
+import com.contafu.config.AeolusConfig
+import com.contafu.utils.AnnotationTools.MAP_KEY_API
+import com.contafu.utils.AnnotationTools.MAP_KEY_BODY
+import com.contafu.utils.AnnotationTools.MAP_KEY_HOST
+import com.contafu.utils.AnnotationTools.MAP_KEY_METHOD
+import com.contafu.utils.AnnotationTools.MAP_KEY_TYPE
+import com.contafu.utils.AnnotationTools.MAP_VALUE_GET
+import com.contafu.utils.AnnotationTools.MAP_VALUE_POST
 import okhttp3.FormBody
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

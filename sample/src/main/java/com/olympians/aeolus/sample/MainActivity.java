@@ -6,12 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.contafu.Aeolus;
-import com.olympians.aeolus.callback.OnAeolusCallback;
-import com.olympians.aeolus.exception.AeolusException;
-
-import org.jetbrains.annotations.NotNull;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
