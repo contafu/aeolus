@@ -3,22 +3,24 @@
 [![](https://jitpack.io/v/contafu/aeolus.svg)](https://jitpack.io/#kontafu/aeolus)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
-## 下载
+下载
+------
 
-    ```groovy
+```groovy
     repositories {
         maven { url 'https://jitpack.io' }
     }
-    ```
+```
 
-    ``` groovy
+``` groovy
     implementation 'com.github.contafu:aeolus:latest-integer'
-    ```
+```
 
-## 使用
+使用
+------
 
-### 1、Application中初始化配置
-    ```java
+#### 1、Application中初始化配置
+```java
         AeolusConfig.INSTANCE
                     .setHost(String host)
                     .addHeader(String key, String value)
@@ -26,7 +28,7 @@
                     .addFilter(AeolusFilter aeolusFilter)
                     .setHttpClient(OkHttpClient okHttpClient)
                     .setTimeout(long timeout, TimeUnit unit)
-    ```
+```
 
 - `setHost(String host)` 配置全局host
 - `addHeader(String key, String value)` 添加单个Header
@@ -37,16 +39,15 @@
 
 <em>当配置 setHttpClient 后 setTimeout 不生效</em>
 
-<hr>
 
-### 2、创建Request类并实现AeolusRequest接口
-    ```java
+#### 2、创建Request类并实现AeolusRequest接口
+```java
     @Get(host = "http://localhost:80", api = "/api/login")
     public class Request implements AeolusRequest {
     }
-    ```
+```
 
-    ```java
+```java
     @Post(host = "http://localhost:80", api = "/api/login", contentType = ContentType_JSON)
     public class Request implements AeolusRequest {
     
@@ -54,7 +55,7 @@
         private List<String> appList;
     
     }
-    ```
+```
 
 - host 为可选参数。若不设置，则取全局配置；若设置则该Request优先使用本处配置；host是否以`/`结尾都可。
 - api 是否以`/`开头或结尾都可
@@ -63,18 +64,16 @@
 <em>如果Request继承于父类，则父类用 `@Query` 注解修饰，否则父类变量不会被检索添加</em>
 <em> `@Strip` 注解用于修饰 `Post` 中的变量，此时当该变量作为JSON方式传递给后端时，只序列化变量值，变量名不参加序列化；一般用作传递JsonArray作为顶层的JSON格式</em>
 
-<hr>
 
-### 3、创建Response类
-    ```java
+#### 3、创建Response类
+```java
     public class Response {
     }
-    ```
+```
 
-<hr>
 
-### 4、调用请求
-    ```java
+#### 4、调用请求
+```java
     new Aeolus.Builder<Response>()
           .addRequest(new Request())
           .addOnStart(() -> {
@@ -95,33 +94,42 @@
 
           })
           .build();
-    ```
+```
 
 - `addOnStart()` 当请求开始时回调
 - `addOnEnd()` 当请求结束时回调
 
-<hr>
 
-### 5、异常码
-    ```text
-        AEOLUS_CODE_OK 请求成功
+#### 5、异常码
+```text
+AEOLUS_CODE_OK 请求成功
 
-        AEOLUS_CODE_JSON_ERROR 解析json异常
+AEOLUS_CODE_JSON_ERROR 解析json异常
 
-        AEOLUS_CODE_SOCKET_ERROR 请求超时
+AEOLUS_CODE_SOCKET_ERROR 请求超时
 
-        AEOLUS_CODE_CONNECT_ERROR 连接超时
+AEOLUS_CODE_CONNECT_ERROR 连接超时
 
-        AEOLUS_CODE_INTERNAL_ERROR 内部异常
+AEOLUS_CODE_INTERNAL_ERROR 内部异常
 
-        AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR 域名解析异常
+AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR 域名解析异常
 
-        AEOLUS_CODE_IO_ERROR 流操作异常
+AEOLUS_CODE_IO_ERROR 流操作异常
 
-        BUSINESS_EXCEPTION 业务异常
-    ```
+BUSINESS_EXCEPTION 业务异常
+```
 
-<hr>
+
+使用环境
+-------
+
+Android 5.0+ (API level 21+) and on Java 8+
+
+低版本请使用
+
+``` groovy
+implementation 'com.github.contafu:aeolus-appcompat:latest-integer'
+```
 
 License
 -------
