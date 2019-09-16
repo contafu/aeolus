@@ -14,6 +14,10 @@ import com.contafu.config.AeolusConfig.TIMEOUT_CONFIG_UNIT
 import com.contafu.exception.AeolusException
 import com.contafu.utils.AeolusTools
 import com.contafu.utils.AnnotationTools
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import java.io.IOException
@@ -75,34 +79,8 @@ object Aeolus {
                 it.writeTimeout(time, unit)
                 it.connectTimeout(time, unit)
             }
-//            val hostnameVerifier = AeolusConfig.getHostnameVerifier()
-//            if (null != hostnameVerifier) {
-//                it.sslSocketFactory(sslSocketFactory(), trustManager)
-//                it.hostnameVerifier(hostnameVerifier)
-//            }
         }.build()
     }
-
-//    private fun sslSocketFactory(): SSLSocketFactory {
-//        val sslContext = SSLContext.getInstance("TLS")
-//        sslContext.init(null, null, SecureRandom())
-//        return sslContext.socketFactory
-//    }
-//
-//    private val trustManager = object : X509TrustManager {
-//
-//        override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) {
-//
-//        }
-//
-//        override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) {
-//        }
-//
-//        override fun getAcceptedIssuers(): Array<X509Certificate> {
-//            return arrayOf()
-//        }
-//
-//    }
 
     private val threadPool by lazy { Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1) }
 
@@ -159,6 +137,27 @@ object Aeolus {
             return this
         }
 
+        fun launch() {
+            start?.onStart()
+            lStart?.invoke()
+            GlobalScope.launch(Dispatchers.IO) {
+                val request = AeolusTools.buildRequest(AnnotationTools.extractParams(request))
+                val response = try {
+                    client.newCall(request).execute()
+                } catch (e: Exception) {
+                    null
+                }
+                withContext(Dispatchers.Main) {
+                    if (null != response) {
+                        val responseCode = response.code
+                    } else {
+
+                    }
+                }
+            }
+        }
+
+        @Deprecated("use launch() instead")
         fun build() {
             start?.onStart()
             lStart?.invoke()
