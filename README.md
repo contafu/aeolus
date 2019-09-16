@@ -1,4 +1,7 @@
 # Aeolus
+Android 5.0+ (API level 21+)
+
+Android 4.0+ (API level 14+) 请使用 [Aeolus-appcompat](https://github.com/contafu/aeolus-appcompat)
 
 [![](https://jitpack.io/v/contafu/aeolus.svg)](https://jitpack.io/#kontafu/aeolus)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
@@ -7,13 +10,13 @@
 ------
 
 ```groovy
-    repositories {
-        maven { url 'https://jitpack.io' }
-    }
+repositories {
+    maven { url 'https://jitpack.io' }
+}
 ```
 
 ``` groovy
-    implementation 'com.github.contafu:aeolus:latest-integer'
+implementation 'com.github.contafu:aeolus:latest-integer'
 ```
 
 使用
@@ -21,13 +24,13 @@
 
 #### 1、Application中初始化配置
 ```java
-        AeolusConfig.INSTANCE
-                    .setHost(String host)
-                    .addHeader(String key, String value)
-                    .addHeaders(Map<String, String> headers)
-                    .addFilter(AeolusFilter aeolusFilter)
-                    .setHttpClient(OkHttpClient okHttpClient)
-                    .setTimeout(long timeout, TimeUnit unit)
+AeolusConfig.INSTANCE
+    .setHost(String host)
+    .addHeader(String key, String value)
+    .addHeaders(Map<String, String> headers)
+    .addFilter(AeolusFilter aeolusFilter)
+    .setHttpClient(OkHttpClient okHttpClient)
+    .setTimeout(long timeout, TimeUnit unit)
 ```
 
 - `setHost(String host)` 配置全局host
@@ -42,19 +45,19 @@
 
 #### 2、创建Request类并实现AeolusRequest接口
 ```java
-    @Get(host = "http://localhost:80", api = "/api/login")
-    public class Request implements AeolusRequest {
-    }
+@Get(host = "http://localhost:80", api = "/api/login")
+public class Request implements AeolusRequest {
+}
 ```
 
 ```java
-    @Post(host = "http://localhost:80", api = "/api/login", contentType = ContentType_JSON)
-    public class Request implements AeolusRequest {
-    
-        @Strip
-        private List<String> appList;
-    
-    }
+@Post(host = "http://localhost:80", api = "/api/login", contentType = ContentType_JSON)
+public class Request implements AeolusRequest {
+
+    @Strip
+    private List<String> appList;
+
+}
 ```
 
 - host 为可选参数。若不设置，则取全局配置；若设置则该Request优先使用本处配置；host是否以`/`结尾都可。
@@ -67,33 +70,33 @@
 
 #### 3、创建Response类
 ```java
-    public class Response {
-    }
+public class Response {
+}
 ```
 
 
 #### 4、调用请求
 ```java
-    new Aeolus.Builder<Response>()
-          .addRequest(new Request())
-          .addOnStart(() -> {
+new Aeolus.Builder<Response>()
+    .addRequest(new Request())
+    .addOnStart(() -> {
 
-          })
-          .addCallback(new OnAeolusCallback<Response>() {
-              @Override
-              public void onFailure(@NotNull AeolusException exception) {
+    })
+    .addCallback(new OnAeolusCallback<Response>() {
+        @Override
+        public void onFailure(@NotNull AeolusException exception) {
 
-              }
+        }
 
-              @Override
-              public void onSuccess(Response response) {
+        @Override
+        public void onSuccess(Response response) {
 
-              }
-          })
-          .addOnEnd(() -> {
+        }
+    })
+    .addOnEnd(() -> {
 
-          })
-          .build();
+    })
+    .build();
 ```
 
 - `addOnStart()` 当请求开始时回调
@@ -101,35 +104,28 @@
 
 
 #### 5、异常码
-```text
-AEOLUS_CODE_OK 请求成功
 
-AEOLUS_CODE_JSON_ERROR 解析json异常
+- AEOLUS_CODE_OK 请求成功
 
-AEOLUS_CODE_SOCKET_ERROR 请求超时
+- AEOLUS_CODE_JSON_ERROR 解析json异常
 
-AEOLUS_CODE_CONNECT_ERROR 连接超时
+- AEOLUS_CODE_SOCKET_ERROR 请求超时
 
-AEOLUS_CODE_INTERNAL_ERROR 内部异常
+- AEOLUS_CODE_CONNECT_ERROR 连接超时
 
-AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR 域名解析异常
+- AEOLUS_CODE_INTERNAL_ERROR 内部异常
 
-AEOLUS_CODE_IO_ERROR 流操作异常
+- AEOLUS_CODE_UNKNOWN_HOSTNAME_ERROR 域名解析异常
 
-BUSINESS_EXCEPTION 业务异常
-```
+- AEOLUS_CODE_IO_ERROR 流操作异常
+
+- BUSINESS_EXCEPTION 业务异常
 
 
 使用环境
 -------
 
 Android 5.0+ (API level 21+) and on Java 8+
-
-低版本请使用
-
-``` groovy
-implementation 'com.github.contafu:aeolus-appcompat:latest-integer'
-```
 
 License
 -------
