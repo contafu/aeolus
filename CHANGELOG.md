@@ -1,3 +1,9 @@
+## `0.4.5`
+- update gradle plugin to 3.5.0
+- update to gradle 5.4.1
+- update to buildToolsVersion 29.0.2
+- update min sdk 21
+
 ## `0.4.4`
 - 增加 lambda 支持
 
