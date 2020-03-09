@@ -1,5 +1,4 @@
 # Aeolus
-Android 5.0+ (API level 21+)
 
 Android 4.0+ (API level 14+) 请使用 [Aeolus-appcompat](https://github.com/contafu/aeolus-appcompat)
 
